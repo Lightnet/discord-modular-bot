@@ -1,0 +1,7 @@
+{
+  "name":"chat room package",
+  "version":"0.0.1",
+  "description":"",
+  "main":"index.js",
+  "enable":true
+}

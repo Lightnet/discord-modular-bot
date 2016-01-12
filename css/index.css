@@ -1,0 +1,26 @@
+.container {
+  #position: relative;
+  float: left;
+}
+nav {
+  #position: absolute;
+  float: left;
+  left: 0px;
+  width: 200px;
+  background-color: white;
+}
+section {
+  /* position is static by default */
+  margin-left: 200px;
+}
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 70px;
+  background-color: white;
+  width: 100%;
+}
+body {
+  margin-bottom: 120px;
+}

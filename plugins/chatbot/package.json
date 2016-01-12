@@ -1,0 +1,7 @@
+{
+  "name":"plugin package",
+  "version":"0.0.1",
+  "description":"",
+  "main":"chatbot_index.js",
+  "enable":true
+}

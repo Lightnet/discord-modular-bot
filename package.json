@@ -1,0 +1,11 @@
+{
+  "name": "discordappbot",
+  "version": "0.0.1",
+  "main": "index.html",
+  "dependencies" : {
+    "discord.io" : "latest"
+  },
+  "window": {
+    "width": 900
+  }
+}

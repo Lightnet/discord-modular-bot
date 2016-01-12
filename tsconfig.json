@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": false,
+        "noLib": false
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "!./node_modules/**/*.ts",
+        "!./DefinitelyTyped/**/*.ts"
+    ],
+    "files": [
+        "./app_botmanage.ts",
+        "./app_web.ts",
+        "./app.ts",
+        "./app/libs/plugin.ts",
+        "./plugins/chatbot/chatbot_index.ts"
+    ],
+    "atom": {
+        "rewriteTsconfig": true
+    }
+}
