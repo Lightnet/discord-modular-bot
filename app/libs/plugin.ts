@@ -35,6 +35,7 @@ class managePlugin{
     modulelist:any = [];
     initlist:any = [];
     messagelist:any = [];
+    discordbot:any;
     routeList:any = [];
     socketconnectList:any = [];
     socketdisconnectList:any = [];
@@ -52,6 +53,14 @@ class managePlugin{
       //console.log("init manage plugin:"+this.id);
       //console.log(module);
       //console.log(Globals);
+    }
+
+    setdiscordclient(_obj){
+        this.discordbot = _obj;
+    }
+
+    getdiscordclient(){
+        return this.discordbot;
     }
 
     setConfig(_config){

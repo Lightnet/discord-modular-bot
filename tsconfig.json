@@ -13,11 +13,14 @@
         "!./DefinitelyTyped/**/*.ts"
     ],
     "files": [
-        "./app_botmanage.ts",
-        "./app_web.ts",
         "./app.ts",
         "./app/libs/plugin.ts",
-        "./plugins/chatbot/chatbot_index.ts"
+        "./app/libs/socketio_module.ts",
+        "./app/libs/ViewEnableMultiFolders.ts",
+        "./plugins/chatbot/chatbot_index.ts",
+        "./public/js/socketioclient.ts",
+        "./test/app_botmanage.ts",
+        "./test/app_web.ts"
     ],
     "atom": {
         "rewriteTsconfig": true

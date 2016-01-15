@@ -1,15 +1,6 @@
 /*
-    Project Name: Discordapp Tool Bot
-    Link:https://bitbucket.org/Lightnet/discordapptoolbot
-    Created By: Lightnet
-    License: cc (creative commons)
-
-    Information: Please read the readme.md file for more information.
+ *
 */
-
-//===============================================
-// @models
-//===============================================
 declare var ko: any;
 
 var MemberDataModel:any = function (_id, _name, _data) {
@@ -92,6 +83,29 @@ var ServerListModel:any = function () {
     }
 }
 
+//===============================================
+// #socket.io
+//===============================================
+var socket = io();
+//console.log("SOCKET");
+socket.on('connect', function () {
+    console.log('server connected');
+});
+socket.on('event', function(data){
+    console.log('event');
+    console.log(data);
+});
+socket.on('disconnect', function () {
+    console.log('server disconnected');
+});
+socket.on('chat message', function (data) {
+    //$('#messages').append($('<li>').text(msg));
+    if(data.msg !=null){
+        AddChatMessage(data.msg);
+    }
+    console.log('chat message');
+});
+
 
 //===============================================
 // @functions
@@ -126,10 +140,17 @@ function AddChatMessage(_text){
 //send message to server
 function InputChatText(_text){
   //send to server with channel id
+  if(socket !=null){
+      console.log("text:"+_text);
+    socket.emit('chat message',{msg:_text});
+  }
+
+  /*
   bot.sendMessage({
       to: config.current.channelid,
       message: _text
   });
+  */
 }
 
 //create variable div to add to chat message
@@ -147,3 +168,6 @@ addEvent(window, 'load', function(){
   ko.applyBindings(serverlist,document.getElementById("serverlist"));
   ko.applyBindings(serverlist,document.getElementById("memberslist"));
 });
+//===============================================
+//
+//===============================================

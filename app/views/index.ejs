@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<HTML>
+   <HEAD>
+      <TITLE> Discord Bot </TITLE>
+      <script src="/socket.io/socket.io.js"></script>
+      <script>
+        //var socket = io();
+      </script>
+      <!-- Bootstrap -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <link href="css/index.css" rel="stylesheet">
+      <script src="js/jquery.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/knockout.js"></script>
+      <script src="js/socketioclient.js"></script>
+      <style>
+      </style>
+      <script>
+      </script>
+   </HEAD>
+   <BODY>
+     <div>
+       <ul class="nav nav-pills">
+        <li role="presentation"><a href="#">Bot</a></li>
+        <li role="presentation"><a href="#">Tools</a></li>
+        <!--
+        <li role="presentation"><a href="#">Database</a></li>
+        <li role="presentation"><a href="#">Messages</a></li>
+        -->
+        <li role="presentation"><a href="#">Plugins</a></li>
+        <li role="presentation"><a href="#">Config</a></li>
+      </ul>
+     </div>
+
+     <div class="container">
+       <nav id="serverlist">
+         <select data-bind="foreach: items, value:serverid, optionsValue:servername, optionsText:servername">
+           <option data-bind="text: name,value:id"></option>
+         </select>
+         <div class="panel-body" style="height:100%;overflow-y: auto;#background-color: gray;">
+           <ul id="" class="list-group" data-bind="foreach: channels">
+              <li class="list-group-item"> <span data-bind="css: icon"> <a href="#" data-bind="text: name"></a> </li>
+           <ul>
+
+         </div>
+       </nav>
+       <section>
+         Top
+       </section>
+       <section>
+         <div class="panel panel-default" style="width:504px;">
+            <div class="panel-body">
+              Chat Messages:
+              <div id="chatboxmessage" style="height:200px;background-color: gray;overflow-y: auto;">
+              </div>
+              <div>
+                <input id="chatinputtext" onkeypress="return ChatInputHandle(event)" value="Test" size="55"></input>
+                <button id="chatbutton" onclick="ButtonChatMessage();">Send</button>
+              </div>
+
+            </div>
+          </div>
+      </section>
+      <section>
+        Bottom
+      </section>
+     </div>
+
+     <div id="memberslist" style="height:100%;overflow-y: auto;">
+        <ul id="" class="list-group" data-bind="foreach: members">
+           <li class="list-group-item"> <span class="glyphicon glyphicon-user"></span> <a href="#" data-bind="text: name"></a> </li>
+        <ul>
+     </div>
+
+     <footer>
+       Footer
+     </footer>
+
+   </BODY>
+</HTML>

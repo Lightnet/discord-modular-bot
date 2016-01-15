@@ -6,23 +6,52 @@
 
     Information: Please read the readme.md file for more information.
 */
+var path = require("path");
+var fs = require('fs');
+//http://voidcanvas.com/get-working-directory-name-and-file-name-in-node/
+//console.log("./ = %s", path.resolve("./"));
 var init = function () {
     //console.log("chat bot init...");
 };
 module.exports.init = init;
-var chatpattern = [
-    { q: "test", a: "tested" },
-    { q: "test", a: "tested" }
+//process.chdir("./");
+//console.log(process.cwd());
+//console.log(process.execPath);
+//console.log(process.chdir());
+console.log(__dirname);
+var chatpatterns = require("./pattern.json");
+console.log(chatpatterns);
+//var p;
+//for (p in chatpatterns){
+//console.log(p);
+//}
+//var data = JSON.stringify(chatpatterns,null,4);
+/*
+fs.writeFile(__dirname + '/test.json', data, function (err) {
+    if (err) {
+      console.log('There has been an error saving your configuration data.');
+      console.log(err.message);
+      return;
+    }
+    console.log('Configuration saved successfully.')
+ });
+*/
+/*
+var chatpatterns = [
+  {q:"test",a:"tested"},
+  {q:"test",a:"tested"},
+  {q:"Test",a:"testme"}
 ];
+*/
 function ProcessText(_message, callback) {
     var bfound = false;
-    console.log("process text...");
-    for (var i = 0; i < chatpattern.length; i++) {
-        if (chatpattern[i].q == _message) {
-            console.log("found");
-            console.log(chatpattern[i].a);
+    //console.log("process text...");
+    for (var i = 0; i < chatpatterns.length; i++) {
+        if (chatpatterns[i].q == _message) {
+            //console.log("found");
+            //console.log(chatpattern[i].a);
             bfound = true;
-            callback(chatpattern[i].a);
+            callback(chatpatterns[i].a);
             break;
         }
     }
@@ -34,21 +63,44 @@ function ProcessText(_message, callback) {
 var plugin = require("../../app/libs/plugin.js");
 var message = function (_bot, _user, _userID, _channelID, _message, _rawEvent, _callback) {
     //console.log("message...");
+    //discordbot = _bot;
     if (plugin.getChanelID() == _channelID) {
         //console.log("current channel..");
         //console.log("_rawEvent:"+_rawEvent);
         //console.log(_rawEvent);
         //var _text = _user + ": " + _message;
-        console.log(_message);
-        ProcessText(_message, function (_text) {
-            if(_text !=null){
-                console.log(_text);
-                _callback(_text);
-            }else{
-                _callback(null);
+        //console.log(_message);
+        ProcessText(_message, function (textstring) {
+            //console.log("finish process...");
+            //console.log(textstring);
+            var ioserver = plugin.getSocketIO();
+            if (ioserver != null) {
+                //console.log("send all message!");
+                ioserver.emit('chat message', { msg: textstring });
             }
         });
-
+        _callback(null);
     }
 };
 module.exports.message = message;
+//===============================================
+// Socket.io
+//===============================================
+module.exports.socket_connect = function (_io, _socket, _db) {
+    console.log("socket...");
+    _socket.on('chat message', function (data) {
+        //console.log('data');
+        //console.log(data);
+        if (data.msg != null) {
+            //console.log(data.msg);
+            var discordbot = plugin.getdiscordclient();
+            var configbot = plugin.getConfig();
+            if (discordbot != null) {
+                discordbot.sendMessage({
+                    to: configbot.current.channelid,
+                    message: data.msg
+                });
+            }
+        }
+    });
+};

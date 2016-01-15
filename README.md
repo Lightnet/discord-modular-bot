@@ -30,6 +30,9 @@ This is an idea testing script on going.
 {
   "email":"",
   "password":"",
+  "token":"",
+  "btoken":false,
+  "autorun":true,
   "current":{
       "serverid":"",
       "servername":"",

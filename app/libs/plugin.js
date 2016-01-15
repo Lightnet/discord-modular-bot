@@ -45,6 +45,12 @@ var managePlugin = (function () {
         //console.log(module);
         //console.log(Globals);
     }
+    managePlugin.prototype.setdiscordclient = function (_obj) {
+        this.discordbot = _obj;
+    };
+    managePlugin.prototype.getdiscordclient = function () {
+        return this.discordbot;
+    };
     managePlugin.prototype.setConfig = function (_config) {
         this.config = _config;
     };

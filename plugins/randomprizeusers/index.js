@@ -7,7 +7,10 @@
     Information: Please read the readme.md file for more information.
 */
 //console.log("plugin script");
+
+var javascriptlist = [];
+
 var init = function(){
-  console.log("random pick users init...");
+  //console.log("random pick users init...");
 }
 module.exports.init = init;
