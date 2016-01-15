@@ -26,6 +26,8 @@ This is an idea testing script on going.
 
 [config json file]
 
+app/config.json
+
 ```
 {
   "email":"",
