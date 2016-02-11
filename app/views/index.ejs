@@ -34,7 +34,7 @@
 
      <div class="container">
        <nav id="serverlist">
-         <select data-bind="foreach: items, value:serverid, optionsValue:servername, optionsText:servername">
+         <select data-bind="foreach: servers, value:serverid, optionsValue:servername, optionsText:servername">
            <option data-bind="text: name,value:id"></option>
          </select>
          <div class="panel-body" style="height:100%;overflow-y: auto;#background-color: gray;">

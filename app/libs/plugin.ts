@@ -196,7 +196,7 @@ class managePlugin{
 		}
     }
     //set message
-    AssignMessage(bot,user, userID, channelID, message, rawEvent, _callback){
+    AssignMessage(bot, user, userID, channelID, message, rawEvent, _callback){
         //console.log("added message?");
         //console.log(this.messagelist.length);
         for (var i = 0; i < this.messagelist.length; i++ ){
@@ -206,7 +206,7 @@ class managePlugin{
     }
 
     //set route
-    AssignRoute(_routes,_app){
+    AssignRoute(_routes, _app){
         for (var i = 0; i < this.routeList.length; i++ ){
 			this.routeList[i].setroute(_routes,_app);
 		}
@@ -219,14 +219,14 @@ class managePlugin{
 		}
     }
     //set disconnection
-    AssignDisconect(_io, _socket,_db){
+    AssignDisconect(_io, _socket, _db){
         for (var i = 0; i < this.socketdisconnectList.length; i++ ){
 			this.socketdisconnectList[i].socket_disconnect(_io, _socket,_db);
         }
     }
 
     //router url set folder
-    addAppView(_app,_view){
+    addAppView(_app, _view){
         //console.log("Adding app view...");
         var views = _app.get('views');
 	    views.push(_view);

@@ -1,3 +1,13 @@
+/*
+    Project Name: Discordapp Tool Bot
+    Link:https://bitbucket.org/Lightnet/discordapptoolbot
+    Created By: Lightnet
+    License: cc (creative commons)
+
+    Information: Please read the readme.md file for more information.
+*/
+
+
 //http://stackoverflow.com/questions/11315351/multiple-view-paths-on-node-js-express
 
 function enable_multiple_view_folders() {

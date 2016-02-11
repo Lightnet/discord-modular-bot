@@ -1,20 +1,21 @@
 /*
-    Project Name: Node Web Sandbox API
-    Link:https://bitbucket.org/Lightnet/nodewebsandboxapi
+    Project Name: Discordapp Tool Bot
+    Link:https://bitbucket.org/Lightnet/discordapptoolbot
     Created By: Lightnet
-    License: Creative Commons [Note there multiple Licenses]
-    Please read the readme.txt file for more information.
+    License: cc (creative commons)
 
-    Information:
-
+    Information: Please read the readme.md file for more information.
 */
-/// <reference path="../../DefinitelyTyped/cryptojs/cryptojs.d.ts" />
+// <reference path="../../DefinitelyTyped/cryptojs/cryptojs.d.ts" />
 //var cookie = require("cookie");
 //var connect = require("connect");
+//declare var crypto:any;
 var plugin = require('./plugin.js');
 var fs = require('fs');
 var path = require('path');
-//var crypto = require('crypto');
+var cryptojs = require('crypto-js');
+//console.log(cryptojs);
+//console.log(cryptojs.HmacMD5("Test",'secret').toString());
 module.exports = function (_io) {
     //console.log("[ = socket.io = ]");
     io = _io;
@@ -67,13 +68,14 @@ module.exports = function (_io) {
         plugin.AssignConnect(io, socket, db);
         //socket.on('ping', function(){socket.emit('pong');});
         //var hash = crypto.createHash('md5').update(socket.id).digest('hex');//md5 hash
-        var hash = socket.id; //md5 hash
+        var hash = cryptojs.HmacMD5(socket.id, 'secret').toString();
+        //var hash = socket.id;//md5 hash
         //console.log("MDR5:"+hash);
         socket.emit('iduser', hash); //send out userid
         socket.userid = "player_" + hash;
         hash = null; //make null since
         socket.on('disconnect', function (data) {
-            console.log('disconnect message: ' + data);
+            //console.log('disconnect message: ' + data);
             //console.log(socket);
             plugin.AssignDisconect(io, socket, db);
         });

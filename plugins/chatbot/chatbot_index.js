@@ -18,9 +18,9 @@ module.exports.init = init;
 //console.log(process.cwd());
 //console.log(process.execPath);
 //console.log(process.chdir());
-console.log(__dirname);
+//console.log(__dirname);
 var chatpatterns = require("./pattern.json");
-console.log(chatpatterns);
+//console.log(chatpatterns);
 //var p;
 //for (p in chatpatterns){
 //console.log(p);
@@ -56,7 +56,7 @@ function ProcessText(_message, callback) {
         }
     }
     if (!bfound) {
-        console.log("not found!");
+        //console.log("not found!");
         callback(null);
     }
 }
@@ -87,7 +87,7 @@ module.exports.message = message;
 // Socket.io
 //===============================================
 module.exports.socket_connect = function (_io, _socket, _db) {
-    console.log("socket...");
+    //console.log("socket...");
     _socket.on('chat message', function (data) {
         //console.log('data');
         //console.log(data);

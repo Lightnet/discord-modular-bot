@@ -1,3 +1,10 @@
 {
-  
+  {
+      "servername":"",
+      "serverid":"",
+      "default":false,
+      "channels":[
+          {"name":"","id":"","default":false}
+      ]
+  }
 }

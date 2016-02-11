@@ -4,11 +4,12 @@ var MemberDataModel = function (_id, _name, _data) {
     this.data = _data;
 };
 //server model
-var ServerDataModel = function (_id, _name) {
+var ServerDataModel = function (_id, _name, _obj) {
     this.name = ko.observable(_name);
     this.id = ko.observable(_id);
     this.channels = ko.observableArray();
     this.members = ko.observableArray();
+    this.data = _obj;
 };
 //Channel model
 var ChannelDataModel = function (_id, _name, _obj) {
@@ -26,11 +27,12 @@ var ChannelDataModel = function (_id, _name, _obj) {
     this.data = _obj;
 };
 var ServerListModel = function () {
-    this.items = ko.observableArray([]);
-    this.members = ko.observableArray([]);
-    this.channels = ko.observableArray([]);
     this.serverid = ko.observable();
     this.servername = ko.observable();
+    this.items = ko.observableArray([]); //server list data
+    this.members = ko.observableArray([]); //set member to display
+    this.channels = ko.observableArray([]); //set channel to display
+    this.servers = ko.observableArray([]); //set server list to display
     var self = this;
     this.additem = function (_object) {
         this.items.push(_object);
@@ -64,10 +66,17 @@ var ServerListModel = function () {
                 //console.log(self.items()[i].members());
                 this.servername(self.items()[i].name());
                 this.serverid(self.items()[i].id());
-                self.members(self.items()[i].members());
-                self.channels(self.items()[i].channels());
+                self.members(self.items()[i].members()); //set current member server
+                self.channels(self.items()[i].channels()); //set current channel server
+                self.servers(self.items()); //server list
             }
         }
+    };
+    this.getserverlist = function () {
+        self.servers(self.items()); //server list
+    };
+    this.clearserver = function () {
+        this.items = ko.observableArray([]);
     };
     this.clearitem = function () {
         this.items = ko.observableArray([]);
@@ -80,6 +89,7 @@ var socket = io();
 //console.log("SOCKET");
 socket.on('connect', function () {
     console.log('server connected');
+    //socket.emit('getdiscordclient');
 });
 socket.on('event', function (data) {
     console.log('event');
@@ -94,6 +104,44 @@ socket.on('chat message', function (data) {
         AddChatMessage(data.msg);
     }
     console.log('chat message');
+});
+socket.on('discordready', function (data) {
+    //$('#messages').append($('<li>').text(msg));
+    //console.log(data);
+    //if(data.msg !=null){
+    //AddChatMessage(data.msg);
+    //}
+    //console.log('discordready');
+    socket.emit('getdiscordclient');
+});
+socket.on('server', function (data) {
+    //$('#messages').append($('<li>').text(msg));
+    //console.log("server");
+    //console.log(data);
+    if (data != null) {
+        if (data['action'] == "clearserver") {
+            //console.log("server clearserver");
+            serverlist.clearserver();
+        }
+        if (data['action'] == "add") {
+            console.log("server add");
+            var cserver = data['data'];
+            var _serverdata = new ServerDataModel(data['data'].id, data['data'].name, data['data']);
+            //console.log(__server.name());
+            for (var i = 0; i < cserver.members.length; i++) {
+                //console.log(cserver.members[i].name);
+                var member = new MemberDataModel(cserver.members[i].id, cserver.members[i].name, cserver.members[i]);
+                _serverdata.members.push(member);
+            }
+            for (var i = 0; i < cserver.channels.length; i++) {
+                //console.log(cserver.channels[i].name);
+                var channel = new ChannelDataModel(cserver.channels[i].id, cserver.channels[i].name, cserver.channels[i]);
+                _serverdata.channels.push(channel);
+            }
+            serverlist.additem(_serverdata);
+            serverlist.getserverlist();
+        }
+    }
 });
 //===============================================
 // @functions
@@ -147,6 +195,7 @@ function addEvent(element, eventName, fn) {
 }
 //key bind to models on on load event
 addEvent(window, 'load', function () {
+    console.log("BIND KO");
     ko.applyBindings(serverlist, document.getElementById("serverlist"));
     ko.applyBindings(serverlist, document.getElementById("memberslist"));
 });

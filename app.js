@@ -10,35 +10,35 @@
 /// <reference path="./app/libs/plugin.ts" />
 /// <reference path="./app/libs/ViewEnableMultiFolders.ts" />
 console.log("app bot");
+if (typeof __dirname == 'undefined') {
+    __dirname = ".";
+}
+var path = require('path');
+var fs = require('fs');
 var config = require('./app/config.json');
-var favicon = require('serve-favicon');
 var express = require('express');
 var app = express();
-var http = require('http').Server(app);
 require('./app/libs/ViewEnableMultiFolders');
+var http = require('http').Server(app);
+var favicon = require('serve-favicon');
 var io = require('socket.io')(http);
 var methodOverride = require('method-override');
 var compression = require('compression');
 var session = require('express-session');
 var flash = require('connect-flash');
-//var MongoStore = require('connect-mongo')(session);
-//var passport = require('passport');
 var connect = require('connect');
-//var mongoose = require('mongoose');
-//mongoose.connect(config.database);
 var cookieParser = require('cookie-parser');
-var path = require('path');
 var bodyParser = require('body-parser');
-var fs = require('fs');
-//var net = require('net');
-var path = require('path');
 var DiscordClient = require('discord.io'); //discordapp client
 var discordbot; //
-if (typeof __dirname == 'undefined') {
-    __dirname = ".";
-}
+//===============================================
+// Plugin setup
+//===============================================
 var plugin = require('./app/libs/plugin.js');
 plugin.setConfig(config);
+//===============================================
+// Models
+//===============================================
 var model_files = fs.readdirSync(__dirname + "/app/models");
 model_files.forEach(function (modelFile) {
     if (path.extname(modelFile) == '.js') {
@@ -46,8 +46,10 @@ model_files.forEach(function (modelFile) {
         require(__dirname + "/app/models/" + modelFile);
     }
 });
+//===============================================
+// Plugin load models
+//===============================================
 //console.log("sync plugins");
-//var plugins = [];
 var plugin_files = fs.readdirSync(__dirname + "/plugins");
 plugin_files.forEach(function (modelFile) {
     //console.log("plugin:"+modelFile);
@@ -82,7 +84,7 @@ plugin_files.forEach(function (modelFile) {
     //console.log(package_config);
 });
 //===============================================
-// Bot Start
+// Discorad bot setup
 //===============================================
 var keyid = {};
 if (config.btoken) {
@@ -100,12 +102,14 @@ else {
     };
     console.log("Access Type: Login Set");
 }
+//init setup connection
 discordbot = new DiscordClient(keyid);
-//init setup
+//set up ready variable
 discordbot.on('ready', function () {
     plugin.AssignInit(); //init plugin module function.
-    plugin.setdiscordclient(discordbot);
+    plugin.setdiscordclient(discordbot); //set discord app bot
     console.log(discordbot);
+    io.emit('discordready');
     for (server in discordbot.servers) {
         var members = discordbot.servers[server].members; //get memebers
         //for(member in members){//id objec
@@ -152,6 +156,7 @@ discordbot.on('ready', function () {
     */
     console.log("ready.");
 });
+//listen to the message from all channels that is link to the account
 discordbot.on('message', function (user, userID, channelID, message, rawEvent) {
     //console.log("channelID:"+channelID + " userID:" + userID + " user:" + user);
     //console.log("message:"+message);
@@ -161,7 +166,7 @@ discordbot.on('message', function (user, userID, channelID, message, rawEvent) {
     });
 });
 var routes = express.Router(); //Router is for page access
-var configweb = true;
+var configweb = true; //place holder
 if (configweb) {
     app.set('view engine', 'ejs'); // set up ejs for templating
     app.set('views', [__dirname + '/app/views']);
@@ -204,10 +209,11 @@ if (configweb) {
     // ==============================================
     // socket.io
     // ==============================================
-    plugin.setSocketIO(io);
-    require('./app/libs/socketio_module.js')(io);
+    plugin.setSocketIO(io); //assign socket.io global access
+    require('./app/libs/socketio_module.js')(io); //setup io list of modules
     var HOSTIP = process.env.IP || "0.0.0.0";
     var HOSTPORT = process.env.PORT || 3000;
+    //start listen server for web host
     http.listen(HOSTPORT, HOSTIP, function () {
         console.log('http://' + HOSTIP + ':' + HOSTPORT + '/');
         //console.log('listening on:' + HOSTIP + ':' + HOSTPORT);
@@ -226,6 +232,7 @@ function timeConverter() {
     var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
     return time;
 }
+//set up time stamp to make sure it corrrect time for debug
 console.log(timeConverter());
 /*
  * END Script

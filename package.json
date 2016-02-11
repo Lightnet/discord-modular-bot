@@ -3,7 +3,21 @@
   "version": "0.0.1",
   "main": "index.html",
   "dependencies" : {
-    "discord.io" : "latest"
+    "discord.io" : "latest",
+    "body-parser" : "latest",
+    "compression" : "latest",
+    "connect" : "latest",
+    "connect-flash" : "latest",
+    "cookie-parser" : "latest",
+    "crytpto" : "latest",
+    "crytpto-js" : "latest",
+    "ejs" : "latest",
+    "express" : "latest",
+    "express-seesion" : "latest",
+    "jade" : "latest",
+    "method-override" : "latest",
+    "serve-favicon" : "latest",
+    "socket.io" : "latest"
   },
   "window": {
     "width": 900
