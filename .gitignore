@@ -1,3 +1,5 @@
 tenc
 app/config.json
 test/
+DefinitelyTyped
+node_modules

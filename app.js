@@ -8,7 +8,6 @@
 */
 /// <reference path="./DefinitelyTyped/node/node.d.ts" />
 /// <reference path="./app/libs/plugin.ts" />
-/// <reference path="./app/libs/ViewEnableMultiFolders.ts" />
 console.log("app bot");
 if (typeof __dirname == 'undefined') {
     __dirname = ".";
@@ -18,7 +17,6 @@ var fs = require('fs');
 var config = require('./app/config.json');
 var express = require('express');
 var app = express();
-require('./app/libs/ViewEnableMultiFolders');
 var http = require('http').Server(app);
 var favicon = require('serve-favicon');
 var io = require('socket.io')(http);
@@ -29,7 +27,7 @@ var flash = require('connect-flash');
 var connect = require('connect');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var DiscordClient = require('discord.io'); //discordapp client
+var discordio = require('discord.io'); //discordapp client
 var discordbot; //
 //===============================================
 // Plugin setup
@@ -103,7 +101,7 @@ else {
     console.log("Access Type: Login Set");
 }
 //init setup connection
-discordbot = new DiscordClient(keyid);
+discordbot = new discordio.Client(keyid);
 //set up ready variable
 discordbot.on('ready', function () {
     plugin.AssignInit(); //init plugin module function.

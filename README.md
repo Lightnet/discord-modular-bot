@@ -1,6 +1,6 @@
-# discordapptoolbot
+# discord-modular-bot
 ```
-Project Name: Discordapp Tool Bot
+Project Name: Discord Modular Bot
 Created By: Lightnet
 License: CC (creative commons)
 ```
@@ -12,7 +12,7 @@ Programs:
  * atom.io (https://atom.io/)
     * atom-typescript
  * Nodejs (https://nodejs.org/en/)
- * NW.js (https://github.com/nwjs/nw.js/)
+ * Electron (http://electron.atom.io/)
 
 Information:
   Just a prototype build application to have plugin tools.
@@ -49,4 +49,4 @@ channelname (set name when it find the id)
 
 [run batch file]
 
-"webkit/nw" . package.json
+npm start

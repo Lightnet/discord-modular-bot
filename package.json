@@ -1,7 +1,12 @@
 {
-  "name": "discordappbot",
+  "name": "discord-modular-bot",
   "version": "0.0.1",
-  "main": "index.html",
+  "description": "A minimal bot application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "license": "CC0-1.0",
   "dependencies" : {
     "discord.io" : "latest",
     "body-parser" : "latest",
@@ -19,7 +24,7 @@
     "serve-favicon" : "latest",
     "socket.io" : "latest"
   },
-  "window": {
-    "width": 900
+  "devDependencies": {
+    "electron": "^1.4.1"
   }
 }
