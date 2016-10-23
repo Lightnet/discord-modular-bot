@@ -16,6 +16,8 @@ if(typeof __dirname == 'undefined'){
   __dirname = ".";
 }
 
+console.log(process.versions);
+
 var path = require('path');
 var fs = require('fs');
 var config = require('./app/config.json');
@@ -34,7 +36,8 @@ var connect = require('connect');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var discordio = require('discord.io'); //discordapp client
+var discordclient = require('discord.io');
+//var discordclient = require('discord.js');
 var discordbot; //
 
 //===============================================
@@ -91,94 +94,6 @@ plugin_files.forEach(function (modelFile) {
     //console.log(package_config);
 });
 
-//===============================================
-// Discorad bot setup
-//===============================================
-
-var keyid = {};
-if(config.btoken){
-    keyid = {
-        autorun: config.autorun,
-        token: config.token
-    };
-    console.log("Access Type: Token key Set");
-}else{
-    keyid = {
-        autorun: config.autorun,
-        email: config.email,
-        password: config.password
-    };
-    console.log("Access Type: Login Set");
-}
-//init setup connection
-discordbot = new discordio.Client(keyid);
-
-//set up ready variable
-discordbot.on('ready', function() {
-    plugin.AssignInit(); //init plugin module function.
-    plugin.setdiscordclient(discordbot); //set discord app bot
-    console.log(discordbot);
-
-    io.emit('discordready');
-
-    for(server in discordbot.servers){//list the server
-      var members = discordbot.servers[server].members; //get memebers
-      //for(member in members){//id objec
-        //var _memberobj = new MemberDataModel(member, members[member].user.username, members[member]);
-        //_serverobj.members.push(_memberobj); //add memeber to the server
-      //}
-
-      var channels = discordbot.servers[server].channels;//get channels
-      for(channel in channels){//id objec
-        //check if channel to match with current room
-        if((discordbot.servers[server].name == config.current.servername) && (channels[channel].name == config.current.channelname)){
-          config.current.serverid = discordbot.servers[server].id; //assign current account id
-          config.current.channelid = channels[channel].id; //assign current account id
-        }
-      }
-    }
-    /*
-    //console.log("ID:");
-    //console.log(bot.username + " - (" + bot.id + ")");
-    //console.log(bot.servers);
-    for(server in bot.servers){
-      var _serverobj = new ServerDataModel(server,bot.servers[server].name);
-      var members = bot.servers[server].members; //get memebers
-      for(member in members){//id objec
-        var _memberobj = new MemberDataModel(member, members[member].user.username, members[member]);
-        _serverobj.members.push(_memberobj); //add memeber to the server
-      }
-
-      var channels = bot.servers[server].channels;//get channels
-      for(channel in channels){//id objec
-        var _channelobj = new ChannelDataModel(channel, channels[channel].name, channels[channel]);
-        _serverobj.channels.push(_channelobj);//add channel
-        //check if channel to match with current room
-        if((bot.servers[server].name == scdata[0].servername) &&(channels[channel].name == scdata[0].channelname)){
-          config.current.serverid = bot.servers[server].id; //assign current account id
-          config.current.channelid = channels[channel].id; //assign current account id
-        }
-      }
-      //add server to the list
-      serverlist.additem(_serverobj);// add server
-    }
-
-    serverlist.selectserverid(config.current.serverid);
-    //serverlist.selectserverdefault(scdata[0].serverid);
-    */
-    console.log("ready.");
-});
-
-//listen to the message from all channels that is link to the account
-discordbot.on('message', function(user, userID, channelID, message, rawEvent) {
-  //console.log("channelID:"+channelID + " userID:" + userID + " user:" + user);
-  //console.log("message:"+message);
-  plugin.AssignMessage(discordbot, user, userID, channelID, message, rawEvent,function(text){
-        if(text !=null){ //make sure the string text
-          //AddChatMessage(text);
-        }
-  });
-});
 
 var routes = express.Router(); //Router is for page access
 var configweb  = true; //place holder
@@ -231,15 +146,118 @@ if(configweb){
     plugin.setSocketIO(io);//assign socket.io global access
     require('./app/libs/socketio_module.js')(io); //setup io list of modules
 
-    var HOSTIP = process.env.IP || "0.0.0.0";
+
+}
+
+function init_web_server(){
+	var HOSTIP = process.env.IP || "0.0.0.0";
     var HOSTPORT = process.env.PORT || 3000;
     //start listen server for web host
     http.listen(HOSTPORT, HOSTIP, function () {
         console.log('http://' + HOSTIP + ':' + HOSTPORT + '/');
         //console.log('listening on:' + HOSTIP + ':' + HOSTPORT);
-        console.log(new Date());
+        //console.log(new Date());
     });
 }
+
+
+//===============================================
+// Discorad bot setup
+//===============================================
+
+var keyid = {};
+if(config.btoken){
+    keyid = {
+        autorun: config.autorun,
+        token: config.token
+    };
+    console.log("Access Type: Token key Set");
+}else{
+    keyid = {
+        autorun: config.autorun,
+        email: config.email,
+        password: config.password
+    };
+    console.log("Access Type: Login Set");
+}
+//init setup connection
+//discordbot = new discordclient.Client();
+discordbot = new discordclient.Client(keyid);
+
+//set up ready variable
+console.log("init bot!");
+discordbot.on('ready', function() {
+	console.log("bot ready!");
+	console.log(discordbot.username + " - [" + discordbot.id + "]");
+    plugin.AssignInit(); //init plugin module function.
+    plugin.setdiscordclient(discordbot); //set discord app bot
+    console.log(discordbot);
+
+	console.log("inviteURL:" + discordbot.inviteURL );
+	console.log("inviteURL:" + "https://discordapp.com/oauth2/authorize?client_id=" + discordbot.id + "&scope=bot");
+
+	//io.emit('discordready');
+    for(server in discordbot.servers){//list the server
+      var members = discordbot.servers[server].members; //get memebers
+      //for(member in members){//id objec
+        //var _memberobj = new MemberDataModel(member, members[member].user.username, members[member]);
+        //_serverobj.members.push(_memberobj); //add memeber to the server
+      //}
+
+      var channels = discordbot.servers[server].channels;//get channels
+      for(channel in channels){//id objec
+        //check if channel to match with current room
+        if((discordbot.servers[server].name == config.current.servername) && (channels[channel].name == config.current.channelname)){
+          config.current.serverid = discordbot.servers[server].id; //assign current account id
+          config.current.channelid = channels[channel].id; //assign current account id
+        }
+      }
+    }
+    /*
+    //console.log("ID:");
+    //console.log(bot.username + " - (" + bot.id + ")");
+    //console.log(bot.servers);
+    for(server in bot.servers){
+      var _serverobj = new ServerDataModel(server,bot.servers[server].name);
+      var members = bot.servers[server].members; //get memebers
+      for(member in members){//id objec
+        var _memberobj = new MemberDataModel(member, members[member].user.username, members[member]);
+        _serverobj.members.push(_memberobj); //add memeber to the server
+      }
+
+      var channels = bot.servers[server].channels;//get channels
+      for(channel in channels){//id objec
+        var _channelobj = new ChannelDataModel(channel, channels[channel].name, channels[channel]);
+        _serverobj.channels.push(_channelobj);//add channel
+        //check if channel to match with current room
+        if((bot.servers[server].name == scdata[0].servername) &&(channels[channel].name == scdata[0].channelname)){
+          config.current.serverid = bot.servers[server].id; //assign current account id
+          config.current.channelid = channels[channel].id; //assign current account id
+        }
+      }
+      //add server to the list
+      serverlist.additem(_serverobj);// add server
+    }
+
+    serverlist.selectserverid(config.current.serverid);
+    //serverlist.selectserverdefault(scdata[0].serverid);
+    */
+    //console.log("ready.");
+	init_web_server();
+});
+
+//listen to the message from all channels that is link to the account
+discordbot.on('message', function(user, userID, channelID, message, rawEvent) {
+  //console.log("channelID:"+channelID + " userID:" + userID + " user:" + user);
+  //console.log("message:"+message);
+  plugin.AssignMessage(discordbot, user, userID, channelID, message, rawEvent,function(text){
+        if(text !=null){ //make sure the string text
+          //AddChatMessage(text);
+        }
+  });
+});
+
+
 
 
 function timeConverter(){

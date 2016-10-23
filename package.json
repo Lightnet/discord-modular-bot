@@ -7,22 +7,20 @@
     "start": "electron ."
   },
   "license": "CC0-1.0",
-  "dependencies" : {
-    "discord.io" : "latest",
-    "body-parser" : "latest",
-    "compression" : "latest",
-    "connect" : "latest",
-    "connect-flash" : "latest",
-    "cookie-parser" : "latest",
-    "crytpto" : "latest",
-    "crytpto-js" : "latest",
-    "ejs" : "latest",
-    "express" : "latest",
-    "express-seesion" : "latest",
-    "jade" : "latest",
-    "method-override" : "latest",
-    "serve-favicon" : "latest",
-    "socket.io" : "latest"
+  "dependencies": {
+    "body-parser": "latest",
+    "compression": "latest",
+    "connect": "latest",
+    "connect-flash": "latest",
+    "cookie-parser": "latest",
+    "discord.io": "latest",
+    "discord.js": "^9.3.1",
+    "ejs": "latest",
+    "express": "latest",
+    "jade": "latest",
+    "method-override": "latest",
+    "serve-favicon": "latest",
+    "socket.io": "latest"
   },
   "devDependencies": {
     "electron": "^1.4.1"

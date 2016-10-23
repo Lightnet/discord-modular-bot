@@ -16,6 +16,7 @@ var ChannelDataModel = function (_id, _name, _obj) {
     this.name = ko.observable(_name);
     this.id = ko.observable(_id);
     this.type = ko.observable(_obj.type);
+	//console.log(_obj.type);
     if (_obj.type == 'text') {
         this.icon = 'glyphicon glyphicon-comment';
     }
@@ -38,9 +39,9 @@ var ServerListModel = function () {
         this.items.push(_object);
     };
     this.serverid.subscribe(function (newValue) {
-        // Handle a change here, e.g. update something on the server with Ajax.
+        // Handle a change here, e.g. update something on the server id
         //alert('myfield changed to ' + newValue);
-        //console.log(newValue);
+        console.log("selected:"+newValue);
         //console.log(self.items());
         for (i in self.items()) {
             //console.log(server);
@@ -54,24 +55,7 @@ var ServerListModel = function () {
             }
         }
     });
-    this.selectserverid = function (_id) {
-        for (i in self.items()) {
-            //console.log(server);
-            //console.log(self.items()[i]);
-            if (self.items()[i].id() == _id) {
-                //console.log(self.items()[i]);
-                //console.log(self.items()[i].name());
-                //this.servername(self.items()[i].name());
-                //console.log("found!");
-                //console.log(self.items()[i].members());
-                this.servername(self.items()[i].name());
-                this.serverid(self.items()[i].id());
-                self.members(self.items()[i].members()); //set current member server
-                self.channels(self.items()[i].channels()); //set current channel server
-                self.servers(self.items()); //server list
-            }
-        }
-    };
+
     this.getserverlist = function () {
         self.servers(self.items()); //server list
     };
@@ -81,6 +65,23 @@ var ServerListModel = function () {
     this.clearitem = function () {
         this.items = ko.observableArray([]);
     };
+	this.getdefault = function(){
+		console.log("LEN:"+self.servers().length);
+		console.log(self.servers());
+		if(self.servers().length == 1){
+			//self.items()[0].members().sort(
+				//function(a, b) { return a.type > b.type;}
+			//);
+			//console.log(self.items()[0].members());
+			self.members(self.items()[0].members());
+			self.items()[0].channels().sort(
+				function(a, b) { return a.type() > b.type();}
+			);
+			//console.log(self.items()[0].channels());
+			self.channels(self.items()[0].channels());
+
+		}
+	}
 };
 //===============================================
 // #socket.io
@@ -89,7 +90,7 @@ var socket = io();
 //console.log("SOCKET");
 socket.on('connect', function () {
     console.log('server connected');
-    //socket.emit('getdiscordclient');
+    socket.emit('getdiscordclient');
 });
 socket.on('event', function (data) {
     console.log('event');
@@ -131,6 +132,7 @@ socket.on('server', function (data) {
             for (var i = 0; i < cserver.members.length; i++) {
                 //console.log(cserver.members[i].name);
                 var member = new MemberDataModel(cserver.members[i].id, cserver.members[i].name, cserver.members[i]);
+				//console.log("username:"+cserver.members[i].name);
                 _serverdata.members.push(member);
             }
             for (var i = 0; i < cserver.channels.length; i++) {
@@ -140,9 +142,17 @@ socket.on('server', function (data) {
             }
             serverlist.additem(_serverdata);
             serverlist.getserverlist();
+			serverlist.getdefault();
+
         }
     }
 });
+
+function getclientlist(){
+	socket.emit('getdiscordclient');
+	console.log("getdiscordclient");
+}
+
 //===============================================
 // @functions
 //===============================================
@@ -195,9 +205,10 @@ function addEvent(element, eventName, fn) {
 }
 //key bind to models on on load event
 addEvent(window, 'load', function () {
-    console.log("BIND KO");
+    //console.log("BIND KO");
     ko.applyBindings(serverlist, document.getElementById("serverlist"));
-    ko.applyBindings(serverlist, document.getElementById("memberslist"));
+	//ko.applyBindings(serverlist, document.getElementById("channellist"));
+    //ko.applyBindings(serverlist, document.getElementById("memberslist"));
 });
 //===============================================
 //

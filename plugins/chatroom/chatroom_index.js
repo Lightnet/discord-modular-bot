@@ -56,9 +56,9 @@ function GetClientSendData(discordbot, client){
       var members = discordbot.servers[server].members; //get memebers
       for(member in members){//id objec
           Server.members.push({
-              id:discordbot.servers[server].members[member].user.id,
-              name:discordbot.servers[server].members[member].user.username,
-              avatar:discordbot.servers[server].members[member].user.avatar,
+              id:discordbot.servers[server].members[member].id,
+              name:discordbot.servers[server].members[member].username,
+              avatar:discordbot.servers[server].members[member].avatar,
               status:discordbot.servers[server].members[member].status || "offline"
           });
         //var _memberobj = new MemberDataModel(member, members[member].user.username, members[member]);
@@ -86,12 +86,12 @@ function GetClientSendData(discordbot, client){
 }
 
 module.exports.socket_connect = function(_io, _socket,_db){
-    console.log("socket...");
+    //console.log("socket...");
 
   _socket.on('getdiscordclient', function (data) {
-    console.log("client data");
+    //console.log("client data");
     var disordclient  = plugin.getdiscordclient();
-    console.log(disordclient);
+    //console.log(disordclient);
     if(disordclient !=null){
         GetClientSendData(disordclient, _socket);
     }
@@ -99,19 +99,6 @@ module.exports.socket_connect = function(_io, _socket,_db){
     //console.log(data);
   });
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //===============================================
 //

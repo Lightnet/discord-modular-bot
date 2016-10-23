@@ -32,7 +32,7 @@ module.exports = function(_io){
     //io.set('log level', 1);
     //io.configure(function (){
 	//console.log("config authorization");
-    io.set('authorization', function (data, accept) {
+    //io.set('authorization', function (data, accept) {
         // check if there's a cookie header
         //console.log(data.headers.cookie);
         /*
@@ -60,8 +60,8 @@ module.exports = function(_io){
         }
         */
         // accept the incoming connection
-        accept(null, true);
-    });
+        //accept(null, true);
+    //});
 
 	//console.log(three_manage);
 	//var name = 'braitsch';
@@ -70,7 +70,7 @@ module.exports = function(_io){
 	//console.log(module_data);
 
     io.on('connection', function(socket){// client listen when connect with the user client web browser
-        console.log('a user connected');
+        //console.log('a user connected');
 		//console.log(socket);
 		//add on socket.io
 		plugin.AssignConnect(io, socket, db);
