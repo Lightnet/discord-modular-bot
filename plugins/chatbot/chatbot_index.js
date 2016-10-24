@@ -62,7 +62,7 @@ function ProcessText(_message, callback) {
 }
 var plugin = require("../../app/libs/plugin.js");
 var message = function (_bot, _user, _userID, _channelID, _message, _rawEvent, _callback) {
-    //console.log("message...");
+    console.log("discord message...");
     //discordbot = _bot;
     if (plugin.getChanelID() == _channelID) {
         //console.log("current channel..");
@@ -70,15 +70,19 @@ var message = function (_bot, _user, _userID, _channelID, _message, _rawEvent, _
         //console.log(_rawEvent);
         //var _text = _user + ": " + _message;
         //console.log(_message);
-        ProcessText(_message, function (textstring) {
+        //var ioserver = plugin.getSocketIO();
+        //ioserver.emit('chat message',{msg:_message});
+        /*
+        ProcessText(_message,function(textstring){
             //console.log("finish process...");
-            //console.log(textstring);
+            console.log(textstring);
             var ioserver = plugin.getSocketIO();
-            if (ioserver != null) {
+            if(ioserver !=null){
                 //console.log("send all message!");
-                ioserver.emit('chat message', { msg: textstring });
+                ioserver.emit('chat message',{msg: _user + ":" + textstring});
             }
         });
+        */
         _callback(null);
     }
 };
@@ -87,7 +91,7 @@ module.exports.message = message;
 // Socket.io
 //===============================================
 module.exports.socket_connect = function (_io, _socket, _db) {
-    //console.log("socket...");
+    console.log("socket message...");
     _socket.on('chat message', function (data) {
         //console.log('data');
         //console.log(data);

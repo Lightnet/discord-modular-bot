@@ -51,6 +51,9 @@ model_files.forEach(function (modelFile) {
 //===============================================
 //console.log("sync plugins");
 var plugin_files = fs.readdirSync(__dirname + "/plugins");
+console.log("// =====");
+console.log("Plugins init...");
+console.log("List:");
 plugin_files.forEach(function (modelFile) {
     //console.log("plugin:"+modelFile);
     var package_filepath = __dirname + "/plugins/" + modelFile + "/"; //file path
@@ -59,18 +62,21 @@ plugin_files.forEach(function (modelFile) {
         //fs.accessSync(package_filename, fs.F_OK);
         fs.accessSync(package_filename, fs.F_OK);
         var package_config = require(package_filename); //config script
-        var package_main = package_filepath + package_config.main; //main script
-        try {
-            fs.accessSync(package_main, fs.F_OK);
-            var packagescript = require(package_main);
-            //add plugin list
-            plugin.addModule(packagescript);
-        }
-        catch (e) {
-            // It isn't accessible
-            console.log(package_main);
-            console.log("Plugin no main file js!" + modelFile);
-            console.log(e);
+        console.log("Plugin" + "[" + package_config.enable + "]: " + package_config.name);
+        if (package_config.enable == true) {
+            var package_main = package_filepath + package_config.main; //main script
+            try {
+                fs.accessSync(package_main, fs.F_OK);
+                var packagescript = require(package_main);
+                //add plugin list
+                plugin.addModule(packagescript);
+            }
+            catch (e) {
+                // It isn't accessible
+                console.log(package_main);
+                console.log("Plugin no main file js!" + modelFile);
+                console.log(e);
+            }
         }
     }
     catch (e) {
@@ -83,6 +89,8 @@ plugin_files.forEach(function (modelFile) {
     //console.log(plugins.length);
     //console.log(package_config);
 });
+console.log("// Plugin End");
+console.log("// =====");
 var routes = express.Router(); //Router is for page access
 var configweb = true; //place holder
 if (configweb) {

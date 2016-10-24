@@ -66,11 +66,10 @@ function ProcessText(_message,callback){
     }
 }
 
-
 var plugin = require("../../app/libs/plugin.js");
 
 var message = function(_bot,_user,_userID, _channelID, _message, _rawEvent, _callback){
-    //console.log("message...");
+    console.log("discord message...");
     //discordbot = _bot;
     if(plugin.getChanelID() == _channelID){
         //console.log("current channel..");
@@ -79,15 +78,21 @@ var message = function(_bot,_user,_userID, _channelID, _message, _rawEvent, _cal
         //var _text = _user + ": " + _message;
         //console.log(_message);
 
+		//var ioserver = plugin.getSocketIO();
+		//ioserver.emit('chat message',{msg:_message});
+
+		/*
         ProcessText(_message,function(textstring){
             //console.log("finish process...");
-            //console.log(textstring);
+            console.log(textstring);
             var ioserver = plugin.getSocketIO();
             if(ioserver !=null){
                 //console.log("send all message!");
-                ioserver.emit('chat message',{msg:textstring});
+                ioserver.emit('chat message',{msg: _user + ":" + textstring});
             }
         });
+		*/
+		
         _callback(null);
     }
 }
@@ -98,21 +103,20 @@ module.exports.message = message;
 // Socket.io
 //===============================================
 module.exports.socket_connect = function(_io, _socket,_db){
-    //console.log("socket...");
-
-  _socket.on('chat message', function (data) {
-    //console.log('data');
-    //console.log(data);
-    if(data.msg !=null){
-            //console.log(data.msg);
-            var discordbot = plugin.getdiscordclient();
-            var configbot = plugin.getConfig();
-            if(discordbot !=null){
-                discordbot.sendMessage({
-                    to: configbot.current.channelid,
-                    message: data.msg
-                });
-            }
-    }
+	console.log("socket message...");
+  	_socket.on('chat message', function (data) {
+	    //console.log('data');
+	    //console.log(data);
+	    if(data.msg !=null){
+	            //console.log(data.msg);
+	            var discordbot = plugin.getdiscordclient();
+	            var configbot = plugin.getConfig();
+	            if(discordbot !=null){
+	                discordbot.sendMessage({
+	                    to: configbot.current.channelid,
+	                    message: data.msg
+	                });
+	            }
+	    }
   });
 };

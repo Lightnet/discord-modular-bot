@@ -66,20 +66,13 @@ var ServerListModel = function () {
         this.items = ko.observableArray([]);
     };
 	this.getdefault = function(){
-		console.log("LEN:"+self.servers().length);
-		console.log(self.servers());
+		//console.log(self.servers());
 		if(self.servers().length == 1){
-			//self.items()[0].members().sort(
-				//function(a, b) { return a.type > b.type;}
-			//);
-			//console.log(self.items()[0].members());
 			self.members(self.items()[0].members());
 			self.items()[0].channels().sort(
 				function(a, b) { return a.type() > b.type();}
 			);
-			//console.log(self.items()[0].channels());
 			self.channels(self.items()[0].channels());
-
 		}
 	}
 };
@@ -101,8 +94,10 @@ socket.on('disconnect', function () {
 });
 socket.on('chat message', function (data) {
     //$('#messages').append($('<li>').text(msg));
+	console.log(data);
     if (data.msg != null) {
         AddChatMessage(data.msg);
+		console.log(data.msg);
     }
     console.log('chat message');
 });
@@ -143,7 +138,6 @@ socket.on('server', function (data) {
             serverlist.additem(_serverdata);
             serverlist.getserverlist();
 			serverlist.getdefault();
-
         }
     }
 });
@@ -152,6 +146,12 @@ function getclientlist(){
 	socket.emit('getdiscordclient');
 	console.log("getdiscordclient");
 }
+
+function getchatroomid(){
+
+
+}
+
 
 //===============================================
 // @functions
