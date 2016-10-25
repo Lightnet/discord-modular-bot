@@ -16,7 +16,6 @@ var ChannelDataModel = function (_id, _name, _obj) {
     this.name = ko.observable(_name);
     this.id = ko.observable(_id);
     this.type = ko.observable(_obj.type);
-	//console.log(_obj.type);
     if (_obj.type == 'text') {
         this.icon = 'glyphicon glyphicon-comment';
     }
@@ -39,9 +38,10 @@ var ServerListModel = function () {
         this.items.push(_object);
     };
     this.serverid.subscribe(function (newValue) {
-        // Handle a change here, e.g. update something on the server id
+        //console.log("subscribe server id");
+        // Handle a change here, e.g. update something on the server with Ajax.
         //alert('myfield changed to ' + newValue);
-        console.log("selected:"+newValue);
+        //console.log(newValue);
         //console.log(self.items());
         for (i in self.items()) {
             //console.log(server);
@@ -51,30 +51,51 @@ var ServerListModel = function () {
                 //console.log("found!");
                 //console.log(self.items()[i].members());
                 self.members(self.items()[i].members());
+                self.items()[i].channels().sort(function (a, b) { return a.type() > b.type(); });
                 self.channels(self.items()[i].channels());
             }
         }
     });
-
+    this.selectserverid = function (_id) {
+        //console.log("selected server id");
+        for (i in self.items()) {
+            //console.log(server);
+            //console.log(self.items()[i]);
+            if (self.items()[i].id() == _id) {
+                //console.log(self.items()[i]);
+                //console.log(self.items()[i].name());
+                //this.servername(self.items()[i].name());
+                //console.log("found!");
+                //console.log(self.items()[i].members());
+                this.servername(self.items()[i].name());
+                this.serverid(self.items()[i].id());
+                self.members(self.items()[i].members()); //set current member server
+                self.items()[i].channels().sort(function (a, b) { return a.type() > b.type(); });
+                self.channels(self.items()[i].channels()); //set current channel server
+                self.servers(self.items()); //server list
+            }
+        }
+    };
     this.getserverlist = function () {
         self.servers(self.items()); //server list
     };
     this.clearserver = function () {
-        this.items = ko.observableArray([]);
+        this.items([]);
+        this.members([]);
+        this.channels([]);
+        this.servers([]);
     };
     this.clearitem = function () {
         this.items = ko.observableArray([]);
     };
-	this.getdefault = function(){
-		//console.log(self.servers());
-		if(self.servers().length == 1){
-			self.members(self.items()[0].members());
-			self.items()[0].channels().sort(
-				function(a, b) { return a.type() > b.type();}
-			);
-			self.channels(self.items()[0].channels());
-		}
-	}
+    this.getdefault = function () {
+        //console.log(self.servers());
+        if (self.servers().length == 1) {
+            self.members(self.items()[0].members());
+            self.items()[0].channels().sort(function (a, b) { return a.type() > b.type(); });
+            self.channels(self.items()[0].channels());
+        }
+    };
 };
 //===============================================
 // #socket.io
@@ -83,7 +104,7 @@ var socket = io();
 //console.log("SOCKET");
 socket.on('connect', function () {
     console.log('server connected');
-    socket.emit('getdiscordclient');
+    socket.emit('getguildlist');
 });
 socket.on('event', function (data) {
     console.log('event');
@@ -92,42 +113,41 @@ socket.on('event', function (data) {
 socket.on('disconnect', function () {
     console.log('server disconnected');
 });
-socket.on('chat message', function (data) {
+socket.on('message', function (data) {
     //$('#messages').append($('<li>').text(msg));
-	console.log(data);
     if (data.msg != null) {
         AddChatMessage(data.msg);
-		console.log(data.msg);
     }
-    console.log('chat message');
+    console.log('message');
 });
+/*
 socket.on('discordready', function (data) {
     //$('#messages').append($('<li>').text(msg));
     //console.log(data);
     //if(data.msg !=null){
-    //AddChatMessage(data.msg);
+        //AddChatMessage(data.msg);
     //}
     //console.log('discordready');
-    socket.emit('getdiscordclient');
+    socket.emit('getguildlist');
 });
+*/
 socket.on('server', function (data) {
     //$('#messages').append($('<li>').text(msg));
     //console.log("server");
     //console.log(data);
     if (data != null) {
-        if (data['action'] == "clearserver") {
-            //console.log("server clearserver");
+        if (data['action'] == "cleanguilds") {
+            //console.log("server clean guilds");
             serverlist.clearserver();
         }
-        if (data['action'] == "add") {
-            console.log("server add");
+        if (data['action'] == "addguild") {
+            //console.log("server addguild");
             var cserver = data['data'];
             var _serverdata = new ServerDataModel(data['data'].id, data['data'].name, data['data']);
             //console.log(__server.name());
             for (var i = 0; i < cserver.members.length; i++) {
                 //console.log(cserver.members[i].name);
                 var member = new MemberDataModel(cserver.members[i].id, cserver.members[i].name, cserver.members[i]);
-				//console.log("username:"+cserver.members[i].name);
                 _serverdata.members.push(member);
             }
             for (var i = 0; i < cserver.channels.length; i++) {
@@ -137,25 +157,19 @@ socket.on('server', function (data) {
             }
             serverlist.additem(_serverdata);
             serverlist.getserverlist();
-			serverlist.getdefault();
+            serverlist.getdefault();
         }
     }
 });
-
-function getclientlist(){
-	socket.emit('getdiscordclient');
-	console.log("getdiscordclient");
-}
-
-function getchatroomid(){
-
-
-}
-
-
 //===============================================
 // @functions
 //===============================================
+function getguildlist() {
+    if (socket != null) {
+        //console.log("refresh?");
+        socket.emit('getguildlist');
+    }
+}
 //Input key press
 function ChatInputHandle(event) {
     if (event.which == 13 || event.keyCode == 13) {
@@ -185,14 +199,8 @@ function InputChatText(_text) {
     //send to server with channel id
     if (socket != null) {
         console.log("text:" + _text);
-        socket.emit('chat message', { msg: _text });
+        socket.emit('message', { msg: _text });
     }
-    /*
-    bot.sendMessage({
-        to: config.current.channelid,
-        message: _text
-    });
-    */
 }
 //create variable div to add to chat message
 var serverlist = new ServerListModel();
@@ -207,8 +215,7 @@ function addEvent(element, eventName, fn) {
 addEvent(window, 'load', function () {
     //console.log("BIND KO");
     ko.applyBindings(serverlist, document.getElementById("serverlist"));
-	//ko.applyBindings(serverlist, document.getElementById("channellist"));
-    //ko.applyBindings(serverlist, document.getElementById("memberslist"));
+    //ko.applyBindings(serverlist,document.getElementById("memberslist"));
 });
 //===============================================
 //

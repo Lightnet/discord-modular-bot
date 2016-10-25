@@ -16,21 +16,19 @@ module.exports.init = init;
 var plugin = require("../../app/libs/plugin.js");
 //console.log(plugin);
 
-var message = function(_bot,_user,_userID, _channelID, _message, _rawEvent, _callback){
+var message = function(_message, _callback){
     console.log("discord message");
     //console.log("getChanelID"+plugin.getChanelID() + ":" + _channelID);
-    if(plugin.getChanelID() == _channelID){
-        //console.log("current channel..");
-        //console.log("_rawEvent:"+_rawEvent);
-        //console.log(_rawEvent);
+	//console.log(plugin.getChanelID());
+	//console.log(_message.channel.id);
+	//console.log(_message);
+	//check if chanel match with chat message current set
+	if(plugin.getChanelID() == _message.channel.id){
+		//console.log("found!");
 		var ioserver = plugin.getSocketIO();
-		ioserver.emit('chat message',{msg: _user + ": " + _message});
-
-        var _text = _user + ": " + _message;
-        _callback(_message);
-    }
-    //console.log("message...");
-}
+		ioserver.emit('message',{msg: _message.author.username + ": " + _message.content});
+	}
+};
 module.exports.message = message;
 
 //===============================================
@@ -43,73 +41,79 @@ var Server = {
     channels:[],
 }
 
-function GetClientSendData(discordbot, client){
-    client.emit("server",{action:"clearserver"});
-    for(server in discordbot.servers){//list the server
-        console.log(discordbot.servers[server]);
-        Server.id = discordbot.servers[server].id;
-        Server.name = discordbot.servers[server].name;
-
-        console.log(Server);
-        Server.members = [];//clear members
-
-      var members = discordbot.servers[server].members; //get memebers
-      for(member in members){//id objec
-          Server.members.push({
-              id:discordbot.servers[server].members[member].id,
-              name:discordbot.servers[server].members[member].username,
-              avatar:discordbot.servers[server].members[member].avatar,
-              status:discordbot.servers[server].members[member].status || "offline"
-          });
-        //var _memberobj = new MemberDataModel(member, members[member].user.username, members[member]);
-        //_serverobj.members.push(_memberobj); //add memeber to the server
-      }
-
-      Server.channels = [];//clear channels
-      var channels = discordbot.servers[server].channels;//get channels
-      for(channel in channels){//id objec
-          Server.channels.push({
-              id:discordbot.servers[server].channels[channel].id,
-              name:discordbot.servers[server].channels[channel].name,
-              type:discordbot.servers[server].channels[channel].type,
-          });
-        //check if channel to match with current room
-        //if((discordbot.servers[server].name == config.current.servername) && (channels[channel].name == config.current.channelname)){
-          //config.current.serverid = discordbot.servers[server].id; //assign current account id
-          //config.current.channelid = channels[channel].id; //assign current account id
-        //}
-      }
-
-      client.emit("server",{action:"add",data:Server});
-    }
-
+//create guild(server) list with members and channels
+function GetGuildList(discordbot, client){
+	discordbot.guilds.forEach(function (guild) {
+    	//console.log("id:"+guild.id);
+		//console.log("name:"+guild.name);
+		Server.id = guild.id;
+        Server.name = guild.name;
+		Server.members = [];//clear members
+		guild.members.forEach(function (member) {
+			//console.log("id:"+member.user.id);
+			//console.log("username:"+member.user.username);
+			//console.log("status:"+member.user.status);
+			//console.log("bot:"+member.user.bot);
+			Server.members.push({
+                id:member.user.id,
+                name:member.user.username,
+                avatar:member.user.avatar,
+                status:member.user.status || "offline",
+				bot:member.user.bot
+            });
+		});
+		Server.channels = [];//clear members
+		guild.channels.forEach(function (channel) {
+			//console.log("id:"+channel.id);
+			//console.log("username:"+channel.name);
+			//console.log("status:"+channel.type);
+			//console.log("bot:"+channel.user.bot);
+			Server.channels.push({
+				id:channel.id,
+				name:channel.name,
+				type:channel.type,
+			});
+		});
+		client.emit("server",{action:"addguild",data:Server});
+	});
 }
 
 module.exports.socket_connect = function(_io, _socket,_db){
     console.log("socket message...");
-
-	_socket.on('chat message', function (data) {
+	_socket.on('message', function (data) {
 	    //console.log('data');
 	    //console.log(data);
 	    if(data.msg !=null){
-	            //console.log(data.msg);
-	            var discordbot = plugin.getdiscordclient();
-	            var configbot = plugin.getConfig();
-	            if(discordbot !=null){
-	                discordbot.sendMessage({
-	                    to: configbot.current.channelid,
-	                    message: data.msg
-	                });
-	            }
-	    }
-  });
+			//console.log("message:"+data.msg);
+            var discordbot = plugin.getdiscordclient();
+            var configbot = plugin.getConfig();
+			//console.log(discordbot);
+            if(discordbot !=null){
+				//console.log(discordbot);
+				discordbot.guilds.forEach(function (guild) {
+					if(guild.name == configbot.current.servername){
+						guild.channels.forEach(function (channel) {
+							//console.log("channel message?");
+							//need to rework this
+							if(channel.name == configbot.current.channelname){
+								channel.sendMessage(data.msg);
+							}
+						});
+					}
+				});
+            }
+    	}
+	});
 
-  	_socket.on('getdiscordclient', function (data) {
-    	//console.log("client data");
+  	_socket.on('getguildlist', function (data) {
+    	//console.log("getguildlist");
     	var disordclient  = plugin.getdiscordclient();
     	//console.log(disordclient);
     	if(disordclient !=null){
-        	GetClientSendData(disordclient, _socket);
+			//clear list
+		    _socket.emit("server",{action:"cleanguilds"});
+			//get list
+        	GetGuildList(disordclient, _socket);
     	}
     	//console.log('data');
     	//console.log(data);

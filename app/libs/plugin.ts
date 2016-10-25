@@ -196,12 +196,12 @@ class managePlugin{
 		}
     }
     //set message
-    AssignMessage(bot, user, userID, channelID, message, rawEvent, _callback){
+    AssignMessage(message, _callback){
         //console.log("added message?");
         //console.log(this.messagelist.length);
         for (var i = 0; i < this.messagelist.length; i++ ){
             //console.log(this.messagelist[i]);
-			this.messagelist[i].message(bot,user, userID, channelID, message, rawEvent, _callback);
+			this.messagelist[i].message(message, _callback);
 		}
     }
 

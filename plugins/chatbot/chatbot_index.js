@@ -8,6 +8,7 @@
 */
 var path = require("path");
 var fs = require('fs');
+var plugin = require("../../app/libs/plugin.js");
 //http://voidcanvas.com/get-working-directory-name-and-file-name-in-node/
 //console.log("./ = %s", path.resolve("./"));
 var init = function () {
@@ -60,23 +61,24 @@ function ProcessText(_message, callback) {
         callback(null);
     }
 }
-var plugin = require("../../app/libs/plugin.js");
-var message = function (_bot, _user, _userID, _channelID, _message, _rawEvent, _callback) {
+var message = function (_message, _callback) {
     console.log("discord message...");
-    if (plugin.getChanelID() == _channelID) {
-        ProcessText(_message, function (textstring) {
+    /*
+    if(plugin.getChanelID() == _channelID){
+        ProcessText(_message,function(textstring){
             //console.log("finish process...");
             console.log(textstring);
             var ioserver = plugin.getSocketIO();
-            if (ioserver != null) {
+            if(ioserver !=null){
                 console.log(_bot);
                 console.log("============");
                 //console.log("send all message!");
-                ioserver.emit('chat message', { msg: _user + ":" + textstring });
+                ioserver.emit('chat message',{msg: _user + ":" + textstring});
             }
         });
         _callback(null);
     }
+    */
 };
 module.exports.message = message;
 //===============================================
@@ -84,21 +86,6 @@ module.exports.message = message;
 //===============================================
 module.exports.socket_connect = function (_io, _socket, _db) {
     console.log("socket message...");
-    _socket.on('chat message', function (data) {
-        //console.log('data');
-        //console.log(data);
-        /*
-        if(data.msg !=null){
-                //console.log(data.msg);
-                var discordbot = plugin.getdiscordclient();
-                var configbot = plugin.getConfig();
-                if(discordbot !=null){
-                    discordbot.sendMessage({
-                        to: configbot.current.channelid,
-                        message: data.msg
-                    });
-                }
-        }
-        */
-    });
+    //_socket.on('message', function (data) {
+    //});
 };

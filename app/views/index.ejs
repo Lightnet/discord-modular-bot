@@ -34,7 +34,7 @@
 
      <div class="container">
        <nav id="serverlist">
-		 <button ondblclick="getclientlist();">Refresh</button>
+		 <button onclick="getguildlist();">Refresh</button>
          <select data-bind="foreach: servers, value:serverid, optionsValue:servername, optionsText:servername">
            <option data-bind="text: name, value:id"></option>
          </select>
@@ -44,7 +44,6 @@
               <li class="list-group-item"> <span data-bind="css: icon"> <a href="#" data-bind="text: name"></a> </li>
            <ul>
          </div>
-
 
        </nav>
        <section>

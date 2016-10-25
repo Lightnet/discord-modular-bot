@@ -164,12 +164,12 @@ var managePlugin = (function () {
         }
     };
     //set message
-    managePlugin.prototype.AssignMessage = function (bot, user, userID, channelID, message, rawEvent, _callback) {
+    managePlugin.prototype.AssignMessage = function (message, _callback) {
         //console.log("added message?");
         //console.log(this.messagelist.length);
         for (var i = 0; i < this.messagelist.length; i++) {
             //console.log(this.messagelist[i]);
-            this.messagelist[i].message(bot, user, userID, channelID, message, rawEvent, _callback);
+            this.messagelist[i].message(message, _callback);
         }
     };
     //set route

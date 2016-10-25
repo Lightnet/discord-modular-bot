@@ -8,11 +8,11 @@
 */
 /// <reference path="./DefinitelyTyped/node/node.d.ts" />
 /// <reference path="./app/libs/plugin.ts" />
-console.log("app bot");
+//console.log("discord.js bot app modular");
 if (typeof __dirname == 'undefined') {
     __dirname = ".";
 }
-console.log(process.versions);
+//console.log(process.versions);
 var path = require('path');
 var fs = require('fs');
 var config = require('./app/config.json');
@@ -28,9 +28,21 @@ var flash = require('connect-flash');
 var connect = require('connect');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var discordclient = require('discord.io');
-//var discordclient = require('discord.js');
+//var discordclient = require('discord.io');
+var discordjs = require('discord.js');
 var discordbot; //
+function timeConverter() {
+    var a = new Date();
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
+    return time;
+}
 //===============================================
 // Plugin setup
 //===============================================
@@ -168,89 +180,61 @@ else {
     console.log("Access Type: Login Set");
 }
 //init setup connection
-//discordbot = new discordclient.Client();
-discordbot = new discordclient.Client(keyid);
+//discordbot = new discordclient.Client(keyid);//discordio
+discordbot = new discordjs.Client();
 //set up ready variable
 console.log("init bot!");
 discordbot.on('ready', function () {
     console.log("bot ready!");
-    console.log(discordbot.username + " - [" + discordbot.id + "]");
+    console.log(discordbot.user.username + " - [" + discordbot.user.id + "]");
     plugin.AssignInit(); //init plugin module function.
+    //set discord.js bot
     plugin.setdiscordclient(discordbot); //set discord app bot
-    console.log(discordbot);
-    console.log("inviteURL:" + discordbot.inviteURL);
-    console.log("inviteURL:" + "https://discordapp.com/oauth2/authorize?client_id=" + discordbot.id + "&scope=bot");
+    //console.log(discordbot);
+    //console.log("inviteURL:" + discordbot.inviteURL );
+    console.log("inviteURL:" + "https://discordapp.com/oauth2/authorize?client_id=" + discordbot.user.id + "&scope=bot");
     //io.emit('discordready');
-    for (server in discordbot.servers) {
-        var members = discordbot.servers[server].members; //get memebers
-        //for(member in members){//id objec
-        //var _memberobj = new MemberDataModel(member, members[member].user.username, members[member]);
-        //_serverobj.members.push(_memberobj); //add memeber to the server
-        //}
-        var channels = discordbot.servers[server].channels; //get channels
-        for (channel in channels) {
-            //check if channel to match with current room
-            if ((discordbot.servers[server].name == config.current.servername) && (channels[channel].name == config.current.channelname)) {
-                config.current.serverid = discordbot.servers[server].id; //assign current account id
-                config.current.channelid = channels[channel].id; //assign current account id
+    //console.log(discordbot.guilds);
+    //console.log(discordbot.guilds.size);
+    //console.log(discordbot.guilds.Map);
+    discordbot.guilds.forEach(function (guild) {
+        //console.log("id:"+guild.id);
+        //console.log("name:"+guild.name);
+        guild.members.forEach(function (member) {
+            //console.log("id:"+member.user.id);
+            //console.log("username:"+member.user.username);
+            //console.log("status:"+member.user.status);
+            //console.log("bot:"+member.user.bot);
+        });
+        guild.channels.forEach(function (channel) {
+            if (channel.name == config.current.channelname && guild.name == config.current.servername) {
+                console.log(channel);
+                config.current.serverid = guild.id;
+                config.current.channelid = channel.id;
             }
-        }
-    }
-    /*
-    //console.log("ID:");
-    //console.log(bot.username + " - (" + bot.id + ")");
-    //console.log(bot.servers);
-    for(server in bot.servers){
-      var _serverobj = new ServerDataModel(server,bot.servers[server].name);
-      var members = bot.servers[server].members; //get memebers
-      for(member in members){//id objec
-        var _memberobj = new MemberDataModel(member, members[member].user.username, members[member]);
-        _serverobj.members.push(_memberobj); //add memeber to the server
-      }
-
-      var channels = bot.servers[server].channels;//get channels
-      for(channel in channels){//id objec
-        var _channelobj = new ChannelDataModel(channel, channels[channel].name, channels[channel]);
-        _serverobj.channels.push(_channelobj);//add channel
-        //check if channel to match with current room
-        if((bot.servers[server].name == scdata[0].servername) &&(channels[channel].name == scdata[0].channelname)){
-          config.current.serverid = bot.servers[server].id; //assign current account id
-          config.current.channelid = channels[channel].id; //assign current account id
-        }
-      }
-      //add server to the list
-      serverlist.additem(_serverobj);// add server
-    }
-
-    serverlist.selectserverid(config.current.serverid);
-    //serverlist.selectserverdefault(scdata[0].serverid);
-    */
-    //console.log("ready.");
+            //console.log("id:"+channel.id);
+            //console.log("username:"+channel.name);
+            //console.log("status:"+channel.type);
+        });
+    });
+    //init web server
     init_web_server();
 });
 //listen to the message from all channels that is link to the account
-discordbot.on('message', function (user, userID, channelID, message, rawEvent) {
+discordbot.on('message', function (message) {
     //console.log("channelID:"+channelID + " userID:" + userID + " user:" + user);
     //console.log("message:"+message);
-    plugin.AssignMessage(discordbot, user, userID, channelID, message, rawEvent, function (text) {
+    plugin.AssignMessage(message, function (text) {
         if (text != null) {
         }
     });
 });
-function timeConverter() {
-    var a = new Date();
-    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    var year = a.getFullYear();
-    var month = months[a.getMonth()];
-    var date = a.getDate();
-    var hour = a.getHours();
-    var min = a.getMinutes();
-    var sec = a.getSeconds();
-    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
-    return time;
-}
-//set up time stamp to make sure it corrrect time for debug
-console.log(timeConverter());
+//initialize discord
+//discordbot.login(config.token,output);
+console.log(discordjs);
+console.log(discordbot);
+//console.log(discordbot.message);
+discordbot.login(config.token);
 /*
  * END Script
  */
