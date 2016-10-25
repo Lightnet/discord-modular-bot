@@ -1,12 +1,11 @@
 /*
-    Project Name: Discordapp Tool Bot
-    Link:https://bitbucket.org/Lightnet/discordapptoolbot
+    Project Name: Discord Modular Bot
+    Link:https://github.com/Lightnet/discord-modular-bot
     Created By: Lightnet
     License: cc (creative commons)
 
     Information: Please read the readme.md file for more information.
 */
-
 
 // <reference path="../../DefinitelyTyped/cryptojs/cryptojs.d.ts" />
 

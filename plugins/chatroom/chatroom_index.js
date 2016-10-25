@@ -1,6 +1,6 @@
 /*
-    Project Name: Discordapp Tool Bot
-    Link:https://bitbucket.org/Lightnet/discordapptoolbot
+    Project Name: Discord Modular Bot
+    Link:https://github.com/Lightnet/discord-modular-bot
     Created By: Lightnet
     License: cc (creative commons)
 

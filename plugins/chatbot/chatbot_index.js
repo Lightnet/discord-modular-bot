@@ -1,6 +1,6 @@
 /*
-    Project Name: Discordapp Tool Bot
-    Link:https://bitbucket.org/Lightnet/discordapptoolbot
+    Project Name: Discord Modular Bot
+    Link:https://github.com/Lightnet/discord-modular-bot
     Created By: Lightnet
     License: cc (creative commons)
 
@@ -63,26 +63,18 @@ function ProcessText(_message, callback) {
 var plugin = require("../../app/libs/plugin.js");
 var message = function (_bot, _user, _userID, _channelID, _message, _rawEvent, _callback) {
     console.log("discord message...");
-    //discordbot = _bot;
     if (plugin.getChanelID() == _channelID) {
-        //console.log("current channel..");
-        //console.log("_rawEvent:"+_rawEvent);
-        //console.log(_rawEvent);
-        //var _text = _user + ": " + _message;
-        //console.log(_message);
-        //var ioserver = plugin.getSocketIO();
-        //ioserver.emit('chat message',{msg:_message});
-        /*
-        ProcessText(_message,function(textstring){
+        ProcessText(_message, function (textstring) {
             //console.log("finish process...");
             console.log(textstring);
             var ioserver = plugin.getSocketIO();
-            if(ioserver !=null){
+            if (ioserver != null) {
+                console.log(_bot);
+                console.log("============");
                 //console.log("send all message!");
-                ioserver.emit('chat message',{msg: _user + ":" + textstring});
+                ioserver.emit('chat message', { msg: _user + ":" + textstring });
             }
         });
-        */
         _callback(null);
     }
 };
@@ -95,16 +87,18 @@ module.exports.socket_connect = function (_io, _socket, _db) {
     _socket.on('chat message', function (data) {
         //console.log('data');
         //console.log(data);
-        if (data.msg != null) {
-            //console.log(data.msg);
-            var discordbot = plugin.getdiscordclient();
-            var configbot = plugin.getConfig();
-            if (discordbot != null) {
-                discordbot.sendMessage({
-                    to: configbot.current.channelid,
-                    message: data.msg
-                });
-            }
+        /*
+        if(data.msg !=null){
+                //console.log(data.msg);
+                var discordbot = plugin.getdiscordclient();
+                var configbot = plugin.getConfig();
+                if(discordbot !=null){
+                    discordbot.sendMessage({
+                        to: configbot.current.channelid,
+                        message: data.msg
+                    });
+                }
         }
+        */
     });
 };

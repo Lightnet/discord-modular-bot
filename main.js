@@ -1,3 +1,12 @@
+/*
+    Project Name: Discord Modular Bot
+    Link:https://github.com/Lightnet/discord-modular-bot
+    Created By: Lightnet
+    License: cc (creative commons)
+
+    Information: Please read the readme.md file for more information.
+*/
+
 const electron = require('electron')
 // Module to control application life.
 const app = electron.app
