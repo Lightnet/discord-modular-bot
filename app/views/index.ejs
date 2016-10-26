@@ -14,70 +14,73 @@
       <script src="js/knockout.js"></script>
       <script src="js/socketioclient.js"></script>
       <style>
+
       </style>
       <script>
       </script>
-   </HEAD>
-   <BODY id="serverlist">
-     <div  style="background-color:gray;">
-       <ul class="nav nav-tabs">
-        <li role="presentation"><a href="#">Bot</a></li>
-        <li role="presentation"><a href="#">Tools</a></li>
-        <!--
-        <li role="presentation"><a href="#">Database</a></li>
-        <li role="presentation"><a href="#">Messages</a></li>
-        -->
-        <li role="presentation"><a href="#">Plugins</a></li>
-        <li role="presentation"><a href="#">Config</a></li>
-      </ul>
-     </div>
+	</HEAD>
+	<BODY id="serverlist">
+		<nav class="navbar navbar-inverse">
+     		<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+			        	<span class="icon-bar"></span>
+			        	<span class="icon-bar"></span>
+			        	<span class="icon-bar"></span>
+			      	</button>
+					<a class="navbar-brand" href="#">Bot</a>
+				</div>
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<ul class="nav navbar-nav">
+						<li><a href="#">Home</a></li>
+			        	<li><a href="#">Status</a></li>
+			        	<li><a href="#">Database</a></li>
+			        	<li><a href="#">Settings</a></li>
+						<li><a href="#">Plugins</a></li>
+			     	</ul>
+			     	<ul class="nav navbar-nav navbar-right">
+						<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+				 	</ul>
+			 	</div>
+		 	</div>
+		</nav>
 
-     <div class="container">
-       <nav id="serverlist">
-		 <button onclick="getguildlist();">Refresh</button>
-         <select data-bind="foreach: servers, value:serverid, optionsValue:servername, optionsText:servername">
-           <option data-bind="text: name, value:id"></option>
-         </select>
+     <div class="container-fluid text-center">
+		 <div class="row content">
+			 <div class="col-sm-2 sidenav">
+				 <button onclick="getguildlist();">Refresh</button>
+			     <select data-bind="foreach: servers, value:serverid, optionsValue:servername, optionsText:servername">
+			   		<option data-bind="text: name, value:id"></option>
+			     </select>
 
-         <div class="panel-body" style="height:100%;overflow-y: auto;#background-color: gray;">
-           <ul id="channellist" class="list-group" data-bind="foreach: channels">
-              <li class="list-group-item"> <span data-bind="css: icon"> <a href="#" data-bind="text: name"></a> </li>
-           <ul>
-         </div>
+				 <ul id="channellist" class="list-group" data-bind="foreach: channels">
+					 <li class="list-group-item"> <span data-bind="css: icon"> <a href="#" data-bind="text: name"></a> </li>
+				 <ul>
 
-       </nav>
-       <section>
-         Top
-       </section>
-       <section>
-         <div class="panel panel-default" style="width:350px;height:400px;">
-            <div class="panel-body">
-              Chat Messages:
-              <div id="chatboxmessage" style="height:200px;background-color: gray;overflow-y: auto;">
-              </div>
-              <div>
-                <input id="chatinputtext" onkeypress="return ChatInputHandle(event)" value="Test" size="40"></input>
-                <button id="chatbutton" onclick="ButtonChatMessage();">Send</button>
-              </div>
+			 </div>
+			 <div class="col-sm-8 text-left">
+				 <div class="panel-body">
+					 Chat Messages:
+					 <div id="chatboxmessage" style="height:200px;background-color: gray;overflow-y: auto;">
+					 </div>
+					 <div>
+					 	<input id="chatinputtext" onkeypress="return ChatInputHandle(event)" value="Test" size="40"></input>
+					 	<button id="chatbutton" onclick="ButtonChatMessage();">Send</button>
+					 </div>
+				 </div>
+			 </div>
+			 <div class="col-sm-2 sidenav">
+				 Members:
+				 <ul id="memberslist" class="list-group" data-bind="foreach: members">
+					 <li class="list-group-item"> <span class="glyphicon glyphicon-user"></span> <a href="#" data-bind="text: name"></a> </li>
+			     <ul>
+			  </div>
+		 </div>
+	</div>
 
-            </div>
-          </div>
-      </section>
-      <section style="background-color:black;">
-        Bottom
-      </section>
-     </div>
-
-     <div id="" style="height:100%;overflow-y: auto;">
-		 Members:
-        <ul id="memberslist" class="list-group" data-bind="foreach: members">
-           <li class="list-group-item"> <span class="glyphicon glyphicon-user"></span> <a href="#" data-bind="text: name"></a> </li>
-        <ul>
-     </div>
-
-     <footer style="background-color:gray;">
-       Footer
-     </footer>
+	<footer class="container-fluid text-center">
+  		<p>Footer Text</p>
+	</footer>
 
    </BODY>
 </HTML>
