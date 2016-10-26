@@ -14,6 +14,12 @@ if(typeof __dirname == 'undefined'){
   __dirname = ".";
 }
 
+var message = "/! item add build";
+var reg = /(\W)+\s/;
+var args = message.match(reg);
+console.log(args);
+
+
 //console.log(process.versions);
 
 var path = require('path');

@@ -4,7 +4,11 @@
 declare var ko: any;
 
 var MemberDataModel:any = function (_id, _name, _data) {
-    this.name = ko.observable(_name);
+	if(_data.bot == true){
+    	this.name = ko.observable(_name+" [Bot]");
+	}else{
+		this.name = ko.observable(_name);
+	}
     this.id = ko.observable(_id);
     this.data = _data;
 }
@@ -22,11 +26,11 @@ var ChannelDataModel:any = function (_id, _name, _obj) {
     this.id = ko.observable(_id);
     this.type = ko.observable(_obj.type);
     if(_obj.type == 'text'){
-    this.icon = 'glyphicon glyphicon-comment';
+    	this.icon = 'glyphicon glyphicon-comment';
     }else{
-    //<span class="glyphicon glyphicon-headphones"></span>
-    //icon-headset
-    this.icon = 'glyphicon glyphicon-headphones';
+    	//<span class="glyphicon glyphicon-headphones"></span>
+    	//icon-headset
+    	this.icon = 'glyphicon glyphicon-headphones';
     }
     this.data = _obj;
 }

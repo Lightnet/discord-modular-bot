@@ -1,5 +1,10 @@
 var MemberDataModel = function (_id, _name, _data) {
-    this.name = ko.observable(_name);
+    if (_data.bot == true) {
+        this.name = ko.observable(_name + " [Bot]");
+    }
+    else {
+        this.name = ko.observable(_name);
+    }
     this.id = ko.observable(_id);
     this.data = _data;
 };
