@@ -20,6 +20,7 @@
         "./plugins/chatbot/chatbot_index.ts",
         "./public/js/socketioclient.ts",
         "./public/js/socketioplugins.ts",
+        "./public/js/socketiosettings.ts",
         "./test/app_botmanage.ts",
         "./test/app_web.ts"
     ],

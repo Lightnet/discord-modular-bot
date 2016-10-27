@@ -155,6 +155,10 @@ if(configweb){
 	routes.get('/plugins', function (req, res) {
         res.render('plugins', {user: req.user});
     });
+
+	routes.get('/settings', function (req, res) {
+        res.render('settings', {user: req.user});
+    });
     /*
     routes.get('/', function (req, res) {
        res.contentType('text/html');
@@ -188,23 +192,8 @@ function init_web_server(){
 //===============================================
 // Discorad bot setup
 //===============================================
-var keyid = {};
-if(config.btoken){
-    keyid = {
-        autorun: config.autorun,
-        token: config.token
-    };
-    console.log("Access Type: Token key Set");
-}else{
-    keyid = {
-        autorun: config.autorun,
-        email: config.email,
-        password: config.password
-    };
-    console.log("Access Type: Login Set");
-}
-//init setup connection
-//discordbot = new discordclient.Client(keyid);//discordio
+
+//init setup discord
 discordbot = new discordjs.Client();
 
 //set up ready variable
@@ -263,14 +252,16 @@ discordbot.on('message', message => {
 console.log(discordjs);
 console.log(discordbot);
 //console.log(discordbot.message);
-discordbot.login(config.token);
+//discordbot.login(config.token);
 
-
-
-
-
-
-
+var keyid = {};
+if(config.btoken){
+	discordbot.login(config.token);
+    console.log("Access Type: Token key Set");
+}else{
+	discordbot.login(config.email,config.password);
+    console.log("Access Type: Login Set");
+}
 /*
  * END Script
  */

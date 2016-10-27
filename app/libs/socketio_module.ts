@@ -61,8 +61,6 @@ module.exports = function(_io){
 							      console.log("JSON saved to " + pluginlist[data['id']].path);
 							    }
 							});
-
-
 						}
 					}
 				}
@@ -70,8 +68,29 @@ module.exports = function(_io){
 		});
 
 		socket.on('settings',function(data){
-
-
+			if(data['action'] !=null){
+				if(data['action'] == 'getsettings'){
+					//socket.emit('settings',{action:'clearlist'});
+					var _config = plugin.getConfig();
+					//console.log(_config);
+					//load settings
+					socket.emit('settings',{action:'config',config:_config});
+				}
+				if(data['action'] == 'setconfig'){
+					if(data['config'] != null){
+						//console.log(data['config']);
+						//console.log(__dirname);
+						//save setting file to json
+						fs.writeFile(__dirname+"/../config.json", JSON.stringify(data['config'], null, 4), function(err) {
+							if(err) {
+							  console.log(err);
+							} else {
+							  console.log("JSON saved to " + __dirname+"/../config.json");
+							}
+						});
+					}
+				}
+			}
 		});
 
 		socket.on('disconnect', function(data){

@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<HTML>
+   <HEAD>
+      <TITLE> Configure Bot </TITLE>
+      <script src="/socket.io/socket.io.js"></script>
+      <script>
+        //var socket = io();
+      </script>
+      <!-- Bootstrap -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <script src="js/jquery.min.js"></script>
+      <script src="js/bootstrap.min.js"></script>
+      <script src="js/knockout.js"></script>
+	  <script src="js/socketiosettings.js"></script>
+      <style>
+
+      </style>
+      <script>
+
+      </script>
+	</HEAD>
+	<BODY>
+		<div id="settings">
+			<Label>Settings</Label>
+			<br> <Label>Autorun</Label> : <button data-bind="text:autorun,click:btn_toggle_autorun">  </button>
+			<br>
+			<br> <Label>User Name</Label> : : <input type="text" data-bind="value:username">
+			<br> <Label>Password</Label> : : <input type="text" data-bind="value:password">
+			<br>
+			<br> <Label>Token Key</Label> : : <input type="text" data-bind="value:tokenkey">
+			<br>
+			<br> <Label>Used Token?</Label> : <button data-bind="text:btoken,click:btn_toggle_token">  </button>
+			<br>
+			<br> <Label>Guild ID</Label> : <input type="text" data-bind="value:current_guild_id">
+			<br> <Label>Guild Name</Label> : <input type="text" data-bind="value:current_guild_name">
+			<br>
+			<br> <Label>Channel ID</Label> : <input type="text" data-bind="value:current_channel_id">
+			<br> <Label>Channel Name</Label> : <input type="text" data-bind="value:current_channel_name">
+
+			<br>  <button data-bind="click:savesettings"> Save  </button>
+		</div>
+   </BODY>
+</HTML>

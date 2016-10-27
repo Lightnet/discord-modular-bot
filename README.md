@@ -5,22 +5,25 @@ Created By: Lightnet
 License: CC (creative commons)
 ```
 Code Languages:
- * typescript (main)
- * javascript
+ * Typescript (main)
+ * Javascript
 
 Programs:
- * atom.io (https://atom.io/)
+ * Atom.io (https://atom.io/)
     * atom-typescript
  * Nodejs (https://nodejs.org/en/)
  * Electron (http://electron.atom.io/)
 
 Information:
-  Just a prototype build application to have plugin tools.
-To develop node webkit UI and other testing purpose.
+  Prototype discordapp bot application in modular plugin tools for desktop
+application to display web UI to run test bot simulation actions.
 
-  To work toward around bot A.I stuff to test my ideas. And As well tools for
-mini app for members to ease of access for contest stuff or day to day stuff or
-events.
+Plan/Idea Design:
+ * To run some thing simple AI to run some mini text base games.
+ * Create simple RPG
+ * Create stats/statistics how bots and users base text rpg?
+ * Account system.
+ * Anti Spam bots?
 
 This is an idea testing script on going.
 
