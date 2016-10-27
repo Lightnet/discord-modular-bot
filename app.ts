@@ -14,15 +14,42 @@ if(typeof __dirname == 'undefined'){
   __dirname = ".";
 }
 
-//var message = "/! item add build";
-//var reg = /(\W)+\s/;
-//var args = message.match(reg);
-//console.log(args);
-
 //console.log(process.versions);
 var path = require('path');
 var fs = require('fs');
-var config = require('./app/config.json');
+var configpath = './app/config.json';
+var config;
+
+if (fs.existsSync(configpath)) {
+    config = require(configpath);
+	console.log('config file exists');
+}else{
+
+	config = {
+		autorun : true,
+	    email: "",
+	    password: "",
+	    btoken: true,
+	    token: "",
+	    current: {
+	        serverid: "",
+	        servername: "",
+	        channelid: "",
+	        channelname: ""
+	    }
+	}
+
+	fs.writeFile(configpath, JSON.stringify(config, null, 4), function(err) {
+		if(err) {
+		  console.log(err);
+		} else {
+		  console.log("JSON saved to " + configpath);
+		}
+	});
+
+}
+
+
 
 var express = require('express');
 var app = express();
@@ -249,19 +276,29 @@ discordbot.on('message', message => {
 
 //initialize discord
 //discordbot.login(config.token,output);
-console.log(discordjs);
-console.log(discordbot);
+//console.log(discordjs);
+//console.log(discordbot);
 //console.log(discordbot.message);
 //discordbot.login(config.token);
 
-var keyid = {};
-if(config.btoken){
-	discordbot.login(config.token);
-    console.log("Access Type: Token key Set");
-}else{
-	discordbot.login(config.email,config.password);
-    console.log("Access Type: Login Set");
+function isEmpty(value) {
+  return typeof value == 'string' && !value.trim() || typeof value == 'undefined' || value === null;
 }
+
+if(isEmpty(config.token)){
+	//init web server
+	init_web_server();
+	console.log("Not found token key and initialize the web server!");
+}else{
+	if(config.btoken){
+		discordbot.login(config.token);
+	    console.log("Access Type: Token key Set");
+	}else{
+		discordbot.login(config.email,config.password);
+	    console.log("Access Type: Login Set");
+	}
+}
+
 /*
  * END Script
  */
