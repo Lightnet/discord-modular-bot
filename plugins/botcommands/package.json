@@ -3,5 +3,5 @@
     "version": "0.0.1",
     "description": "",
     "main": "botcommands_index.js",
-    "enable": false
+    "enable": true
 }

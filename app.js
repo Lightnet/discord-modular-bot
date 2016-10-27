@@ -12,7 +12,7 @@
 if (typeof __dirname == 'undefined') {
     __dirname = ".";
 }
-//console.log(process.versions);
+console.log(process.versions);
 var path = require('path');
 var fs = require('fs');
 var configpath = './app/config.json';
@@ -272,6 +272,7 @@ else {
         console.log("Access Type: Login Set");
     }
 }
+//console.log(mongorito);
 /*
  * END Script
  */

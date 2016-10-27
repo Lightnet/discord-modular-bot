@@ -14,7 +14,7 @@ if(typeof __dirname == 'undefined'){
   __dirname = ".";
 }
 
-//console.log(process.versions);
+console.log(process.versions);
 var path = require('path');
 var fs = require('fs');
 var configpath = './app/config.json';
@@ -24,7 +24,6 @@ if (fs.existsSync(configpath)) {
     config = require(configpath);
 	console.log('config file exists');
 }else{
-
 	config = {
 		autorun : true,
 	    email: "",
@@ -295,6 +294,8 @@ if(isEmpty(config.token)){
 	    console.log("Access Type: Login Set");
 	}
 }
+
+//console.log(mongorito);
 
 /*
  * END Script

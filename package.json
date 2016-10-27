@@ -19,6 +19,7 @@
     "express": "latest",
     "jade": "latest",
     "method-override": "latest",
+    "mongorito": "^2.1.2",
     "serve-favicon": "latest",
     "socket.io": "latest"
   },

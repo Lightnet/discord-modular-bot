@@ -1,11 +1,3 @@
-/*
-    Project Name: Discord Modular Bot
-    Link:https://github.com/Lightnet/discord-modular-bot
-    Created By: Lightnet
-    License: cc (creative commons)
-
-    Information: Please read the readme.md file for more information.
-*/
 var path = require("path");
 var fs = require('fs');
 var plugin = require("../../app/libs/plugin.js");
@@ -15,6 +7,8 @@ var botcommand = function (_line, _callback) {
     this.callback = _callback;
 };
 var init = function () {
+    //console.log(global.run);
+    //console.log(global.mongorito);
     //console.log("chat bot init...");
     //var helpcommand = new botcommand("help",function(message,args){
     //message.channel.sendMessage("help found!");

@@ -6,6 +6,7 @@
 
     Information: Please read the readme.md file for more information.
 */
+declare var global:any;
 
 var path = require("path");
 var fs = require('fs');
@@ -19,6 +20,8 @@ var botcommand = function(_line,_callback){
 }
 
 var init = function(){
+	//console.log(global.run);
+	//console.log(global.mongorito);
   	//console.log("chat bot init...");
 	//var helpcommand = new botcommand("help",function(message,args){
 		//message.channel.sendMessage("help found!");
