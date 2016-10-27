@@ -2,20 +2,20 @@
 <HTML>
 	  <script src="app.js"></script>
       <script>
-      function addEvent(element, eventName, fn) {
-          if (element.addEventListener)
-              element.addEventListener(eventName, fn, false);
-          else if (element.attachEvent)
-              element.attachEvent('on' + eventName, fn);
-      }
-      //key bind to models on on load event
-      addEvent(window, 'load', function(){
-		  setTimeout(function(){
-		  	document.getElementById('pageuiframe').src = "http://127.0.0.1:3000/";
-		}, 1000);
-
-          //console.log(document.getElementById('pageuiframe'));
-      });
+	      function addEvent(element, eventName, fn) {
+	          if (element.addEventListener)
+	              element.addEventListener(eventName, fn, false);
+	          else if (element.attachEvent)
+	              element.attachEvent('on' + eventName, fn);
+	      }
+	      //key bind to models on on load event
+	      addEvent(window, 'load', function(){
+			  setTimeout(function(){
+				  //delay load url in case it fail to access local web page
+				  document.getElementById('pageuiframe').src = "http://127.0.0.1:3000/";
+			  }, 1000);
+			  //console.log(document.getElementById('pageuiframe'));
+		  });
       </script>
        <frameset rows="*">
            <frame id="pageuiframe" >

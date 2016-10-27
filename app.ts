@@ -46,10 +46,7 @@ if (fs.existsSync(configpath)) {
 		  console.log("JSON saved to " + configpath);
 		}
 	});
-
 }
-
-
 
 var express = require('express');
 var app = express();
@@ -224,7 +221,7 @@ function init_web_server(){
 discordbot = new discordjs.Client();
 
 //set up ready variable
-console.log("init bot!");
+console.log("Initialize Discordapp API!");
 discordbot.on('ready', function() {
 	console.log("bot ready!");
 	console.log(discordbot.user.username + " - [" + discordbot.user.id + "]");
@@ -282,7 +279,7 @@ discordbot.on('message', message => {
 //discordbot.login(config.token);
 
 function isEmpty(value) {
-  return typeof value == 'string' && !value.trim() || typeof value == 'undefined' || value === null;
+	return typeof value == 'string' && !value.trim() || typeof value == 'undefined' || value === null;
 }
 
 if(isEmpty(config.token)){

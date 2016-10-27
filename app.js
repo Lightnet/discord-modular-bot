@@ -202,7 +202,7 @@ function init_web_server() {
 //init setup discord
 discordbot = new discordjs.Client();
 //set up ready variable
-console.log("init bot!");
+console.log("Initialize Discordapp API!");
 discordbot.on('ready', function () {
     console.log("bot ready!");
     console.log(discordbot.user.username + " - [" + discordbot.user.id + "]");

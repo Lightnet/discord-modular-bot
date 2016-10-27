@@ -1,10 +1,13 @@
 <!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <HTML>
    <HEAD>
-      <TITLE> Plugin </TITLE>
+      <TITLE> Bot Plugins </TITLE>
       <script src="/socket.io/socket.io.js"></script>
-      <script>
-        //var socket = io();
+	  <script>
+	  		window.nodeRequire = require;
+			delete window.require;
+			delete window.exports;
+			delete window.module;
       </script>
       <!-- Bootstrap -->
       <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -21,10 +24,11 @@
 	</HEAD>
 	<BODY>
 		<div id="pluginlist">
-			<Label>Plugins (Note it need to be manual restart to used those plugins)</Label>
+			<Label>Plugins List</Label>
 			<ul data-bind="foreach: items, value:pluginvalue, optionsValue:pluginname">
 		   		<li><a href="#" data-bind="text: name, value:id"> </a> <button data-bind="text:btn_name,click:btn_toggle"> </button></li>
 			</ul>
+			<Label>Note it need to be manual restart to able to disable or enable those plugins.</Label>
 		</div>
    </BODY>
 </HTML>

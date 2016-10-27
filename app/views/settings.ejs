@@ -1,10 +1,13 @@
 <!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
 <HTML>
    <head>
-      <TITLE> Settings Bot </TITLE>
+      <TITLE> Settings Bot</TITLE>
 
       <script>
-        //var socket = io();
+	  		window.nodeRequire = require;
+			delete window.require;
+			delete window.exports;
+			delete window.module;
       </script>
 	  <script src="js/jquery.min.js"></script>
       <!-- Bootstrap -->
