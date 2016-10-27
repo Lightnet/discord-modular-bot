@@ -20,15 +20,15 @@ var botcommand = function(_line,_callback){
 
 var init = function(){
   	//console.log("chat bot init...");
-	var helpcommand = new botcommand("help",function(message,args){
-		message.channel.sendMessage("help found!");
-	});
-	commands.push(helpcommand);
+	//var helpcommand = new botcommand("help",function(message,args){
+		//message.channel.sendMessage("help found!");
+	//});
+	//commands.push(helpcommand);
 
-	var statscommand = new botcommand("stats",function(message,args){
-		message.channel.sendMessage("stats found!");
-	});
-	commands.push(statscommand);
+	//var statscommand = new botcommand("stats",function(message,args){
+		//message.channel.sendMessage("stats found!");
+	//});
+	//commands.push(statscommand);
 }
 module.exports.init = init;
 
@@ -54,8 +54,7 @@ function StringCommandProcessCheck(_message,callback){
 //plugin for discord message callback
 //need to work on the filter messages channels
 var message = function(_message, _callback){
-    console.log("discord message...");
-
+    //console.log("discord message...");
 	if(plugin.getChanelID() == _message.channel.id){//only channel id or name to filter just for the reponse
 		StringCommandProcessCheck(_message, function(textstring){
             //console.log("finish process...");

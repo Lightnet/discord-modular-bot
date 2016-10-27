@@ -23,14 +23,17 @@ var managePlugin = (function () {
     function managePlugin() {
         //public static MyInstance:any;
         this.self = this;
+        //database
         this.databasetype = "";
         this.database = [];
+        //plugin list
+        this.pluginlist = [];
         this.modulelist = [];
         this.initlist = [];
         this.messagelist = [];
-        this.routeList = [];
         this.socketconnectList = [];
         this.socketdisconnectList = [];
+        this.routeList = [];
         this.appBeforeSession = [];
         this.appSession = [];
         this.appAfterSession = [];
@@ -82,8 +85,16 @@ var managePlugin = (function () {
             }
         }
     };
+    managePlugin.prototype.addplugin = function (_config, _path) {
+        this.pluginlist.push({ config: _config, path: _path });
+    };
+    managePlugin.prototype.getpluginlist = function () {
+        return this.pluginlist;
+    };
     managePlugin.prototype.addModule = function (_module) {
         //console.log("Added Module...");
+        //console.log(_module);
+        //console.log(this.modulelist);
         this.modulelist.push(_module);
         if (typeof _module.init === 'function') {
             //set route page url

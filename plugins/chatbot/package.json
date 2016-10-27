@@ -1,5 +1,5 @@
 {
-  "name":"plugin package",
+  "name":"chat bot package",
   "version":"0.0.1",
   "description":"",
   "main":"chatbot_index.js",

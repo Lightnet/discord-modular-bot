@@ -34,6 +34,46 @@ module.exports = function(_io){
 		socket.userid = "player_" + hash;
 		hash = null;//make null since
 
+		socket.on('plugins',function(data){
+			if(data !=null){
+				if(data['action'] !=null){
+					if(data['action'] == 'getlist'){
+						var pluginlist = plugin.getpluginlist();
+						socket.emit('plugins',{action:'clearlist'});
+						for(var i = 0; i < pluginlist.length;i++){
+							//console.log(pluginlist[i]);
+							socket.emit('plugins',{action:'addlist',index:i,config:pluginlist[i].config});
+						}
+						pluginlist = null;
+					}
+					if(data['action'] == 'pluginstate'){
+						var pluginlist = plugin.getpluginlist();
+						//console.log("pluginstate");
+						if(pluginlist[data['id']] != null){
+							pluginlist[data['id']].config.enable = data['pluginstate'];
+							//console.log(pluginlist[data['id']]);
+							//need to write file here
+
+							fs.writeFile(pluginlist[data['id']].path, JSON.stringify(pluginlist[data['id']].config, null, 4), function(err) {
+							    if(err) {
+							      console.log(err);
+							    } else {
+							      console.log("JSON saved to " + pluginlist[data['id']].path);
+							    }
+							});
+
+
+						}
+					}
+				}
+			}
+		});
+
+		socket.on('settings',function(data){
+
+
+		});
+
 		socket.on('disconnect', function(data){
 			//console.log('disconnect message: ' + data);
 			//console.log(socket);

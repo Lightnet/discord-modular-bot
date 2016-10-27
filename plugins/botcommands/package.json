@@ -1,7 +1,7 @@
 {
-  "name":"bot command package",
-  "version":"0.0.1",
-  "description":"",
-  "main":"botcommands_index.js",
-  "enable":true
+    "name": "bot command package",
+    "version": "0.0.1",
+    "description": "",
+    "main": "botcommands_index.js",
+    "enable": false
 }

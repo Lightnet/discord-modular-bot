@@ -17,7 +17,7 @@ var plugin = require("../../app/libs/plugin.js");
 //console.log(plugin);
 
 var message = function(_message, _callback){
-    console.log("discord message");
+    //console.log("discord message");
     //console.log("getChanelID"+plugin.getChanelID() + ":" + _channelID);
 	//console.log(plugin.getChanelID());
 	//console.log(_message.channel.id);
@@ -79,7 +79,7 @@ function GetGuildList(discordbot, client){
 }
 
 module.exports.socket_connect = function(_io, _socket,_db){
-    console.log("socket message...");
+    //console.log("socket message...");
 	_socket.on('message', function (data) {
 	    //console.log('data');
 	    //console.log(data);

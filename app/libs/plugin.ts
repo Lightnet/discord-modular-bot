@@ -27,18 +27,25 @@ class managePlugin{
     self:any = this;
     name:string;
     id:any;
+	//config
     config:any;
+	//database
     databasetype:string = "";
     database:any = [];
-    io:any;
-    app:any;
+	//plugin list
+	pluginlist:any = [];
     modulelist:any = [];
     initlist:any = [];
-    messagelist:any = [];
+	//discord app
     discordbot:any;
-    routeList:any = [];
+	messagelist:any = [];
+	//socket.io
+	io:any;
     socketconnectList:any = [];
     socketdisconnectList:any = [];
+	//express
+    app:any;
+	routeList:any = [];
     appBeforeSession:any = [];
     appSession:any = [];
     appAfterSession:any = [];
@@ -96,8 +103,18 @@ class managePlugin{
         }
     }
 
+	addplugin(_config,_path){
+		this.pluginlist.push({config:_config, path:_path});
+	}
+
+	getpluginlist(){
+		return this.pluginlist;
+	}
+
     addModule (_module){
         //console.log("Added Module...");
+		//console.log(_module);
+		//console.log(this.modulelist);
         this.modulelist.push(_module);
 
         if(typeof _module.init === 'function'){

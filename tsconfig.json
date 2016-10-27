@@ -19,6 +19,7 @@
         "./plugins/botcommands/botcommands_index.ts",
         "./plugins/chatbot/chatbot_index.ts",
         "./public/js/socketioclient.ts",
+        "./public/js/socketioplugins.ts",
         "./test/app_botmanage.ts",
         "./test/app_web.ts"
     ],

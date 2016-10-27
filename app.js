@@ -12,10 +12,10 @@
 if (typeof __dirname == 'undefined') {
     __dirname = ".";
 }
-var message = "/! item add build";
-var reg = /(\W)+\s/;
-var args = message.match(reg);
-console.log(args);
+//var message = "/! item add build";
+//var reg = /(\W)+\s/;
+//var args = message.match(reg);
+//console.log(args);
 //console.log(process.versions);
 var path = require('path');
 var fs = require('fs');
@@ -79,6 +79,8 @@ plugin_files.forEach(function (modelFile) {
         fs.accessSync(package_filename, fs.F_OK);
         var package_config = require(package_filename); //config script
         console.log("Plugin" + "[" + package_config.enable + "]: " + package_config.name);
+        //add plugin list
+        plugin.addplugin(package_config, package_filename);
         if (package_config.enable == true) {
             var package_main = package_filepath + package_config.main; //main script
             try {
@@ -135,6 +137,9 @@ if (configweb) {
     app.use(routes);
     routes.get('/', function (req, res) {
         res.render('index', { user: req.user });
+    });
+    routes.get('/plugins', function (req, res) {
+        res.render('plugins', { user: req.user });
     });
     /*
     routes.get('/', function (req, res) {
@@ -212,7 +217,7 @@ discordbot.on('ready', function () {
         });
         guild.channels.forEach(function (channel) {
             if (channel.name == config.current.channelname && guild.name == config.current.servername) {
-                console.log(channel);
+                //console.log(channel);
                 config.current.serverid = guild.id;
                 config.current.channelid = channel.id;
             }
