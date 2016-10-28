@@ -4,6 +4,7 @@ Project Name: Discord Modular Bot
 Created By: Lightnet
 License: CC (creative commons)
 ```
+![Image of discordbot](https://github.com/Lightnet/discord-modular-bot/blob/master/discordmodularbot.png)
 
 Status: Work in progress.
 
