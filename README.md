@@ -17,22 +17,29 @@ Programs:
     * atom-typescript
  * Nodejs (https://nodejs.org/en/)
  * Electron (http://electron.atom.io/)
- * MonogoDB
+ * MonogoDB (https://www.mongodb.com/)
 
 Nodejs Packages:
- * express
- * socket.io
- * discord.js
- * mongorito
+ * expressjs (http://expressjs.com/)
+ * socket.io (http://socket.io/)
+ * discord.js (https://discord.js.org/#!/)
+ * mongorito (https://github.com/vdemedes/mongorito)
+
+Browser scripts:
+ * bootstrap.js (http://getbootstrap.com/)
+ * jquery.js (https://jquery.com/)
+ * knockout.js (http://knockoutjs.com/)
+ * threejs (https://threejs.org/)
 
 Information:
   Prototype discordapp bot application in modular plugin tools for desktop application to display web UI to run test bot simulation actions.
 
 Plan/Idea Design:
- * To run some thing simple AI to run some mini text base games.
+ * 2D/3D game world?
+ * To run some thing simple AI to run some mini text base games?
  * Create simple RPG
- * Create stats/statistics how bots and users base text rpg?
- * Account system.
+ * Create stats/statistics how bots and users base text?
+ * Account system?
  * Anti Spam bots?
 
 This is an idea testing script on going.
