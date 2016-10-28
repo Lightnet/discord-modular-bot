@@ -1,3 +1,4 @@
+var express = require('express');
 var path = require("path");
 var fs = require('fs');
 var plugin = require("../../app/libs/plugin.js");
@@ -38,6 +39,23 @@ function StringCommandProcessCheck(_message, callback) {
     }
     callback(null);
 }
+//===============================================
+// route
+//===============================================
+module.exports.setroute = function (routes, app) {
+    console.log('route module');
+    //add current dir plugin public folder
+    app.use(express.static(__dirname + '/public'));
+    //add current dir plugin views folder
+    console.log(__dirname);
+    app.set('views', path.join(__dirname, '/views'));
+    routes.get('/botcommands', function (req, res) {
+        res.render('botcommands', {}); //render file .ejs
+        //res.contentType('text/html');
+        //res.send('Hello World!');
+        //res.render('test',{});
+    });
+};
 //plugin for discord message callback
 //need to work on the filter messages channels
 var message = function (_message, _callback) {

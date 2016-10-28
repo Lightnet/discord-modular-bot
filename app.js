@@ -46,6 +46,27 @@ else {
 }
 var express = require('express');
 var app = express();
+function enable_multiple_view_folders() {
+    // Monkey-patch express to accept multiple paths for looking up views.
+    // this path may change depending on your setup.
+    var View = require("./node_modules/express/lib/view"), lookup_proxy = View.prototype.lookup;
+    View.prototype.lookup = function (viewName) {
+        var context, match;
+        if (this.root instanceof Array) {
+            for (var i = 0; i < this.root.length; i++) {
+                context = { root: this.root[i] };
+                match = lookup_proxy.call(context, viewName);
+                if (match) {
+                    return match;
+                }
+            }
+            return null;
+        }
+        return lookup_proxy.call(this, viewName);
+    };
+}
+//enable_multiple_view_folders();
+var routes = require('./app/routes/index');
 var http = require('http').Server(app);
 var favicon = require('serve-favicon');
 var io = require('socket.io')(http);
@@ -133,12 +154,17 @@ plugin_files.forEach(function (modelFile) {
 });
 console.log("// Plugin End");
 console.log("// =====");
-var routes = express.Router(); //Router is for page access
+//var routes = express.Router(); //Router is for page access
 var configweb = true; //place holder
 if (configweb) {
+    app.use(express.static(path.resolve(__dirname, 'public')));
     app.set('view engine', 'ejs'); // set up ejs for templating
-    app.set('views', [__dirname + '/app/views']);
-    app.use("/", express.static('./public')); //redirect folder path
+    //app.set('views', [__dirname + '/app/views']);
+    //app.set('views', path.join(__dirname+"/plugins/botcommands/", '/views'));
+    //app.set('views', path.join(__dirname, '/app/views'));
+    //app.set('views',[ path.join(__dirname+"/plugins/botcommands/", '/views'), path.join(__dirname, '/app/views')  ]);
+    //console.log(__dirname);
+    //app.use("/", express.static('./public')); //redirect folder path
     app.use(favicon(__dirname + '/public/favicon.ico', { maxAge: 1000 }));
     //app.use(favicon('./public/favicon.ico',{ maxAge: 1000 }));
     app.use(compression());
@@ -159,26 +185,13 @@ if (configweb) {
     //app.use(passport.session()); // persistent login sessions
     app.use(flash()); // use connect-flash for flash messages stored in session
     app.use(routes);
-    routes.get('/', function (req, res) {
-        res.render('index', { user: req.user });
-    });
-    routes.get('/plugins', function (req, res) {
-        res.render('plugins', { user: req.user });
-    });
-    routes.get('/settings', function (req, res) {
-        res.render('settings', { user: req.user });
-    });
-    /*
-    routes.get('/', function (req, res) {
-       res.contentType('text/html');
-       res.send('Hello World!');
-       //res.send('<iframe src="https://discordapp.com/widget?id=&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>');
-   });
-   */
     // ==============================================
     // Route Pages/URL
     // ==============================================
-    plugin.AssignRoute(routes, app);
+    //Views needs to be added in order else it give an error say index not found
+    plugin.AssignRoute(routes, app); // this need to be added first since
+    app.set('views', path.join(__dirname, '/app/views')); //This needs to be added last
+    //set routes
     app.use('/', routes);
     // ==============================================
     // socket.io
@@ -248,12 +261,30 @@ discordbot.on('message', function (message) {
         }
     });
 });
-//initialize discord
-//discordbot.login(config.token,output);
-//console.log(discordjs);
-//console.log(discordbot);
-//console.log(discordbot.message);
-//discordbot.login(config.token);
+discordbot.on('typingStart', function (channel, user) {
+    //do stuff
+    console.log(user + "typingStart");
+});
+discordbot.on('typingStop', function (channel, user) {
+    //do stuff
+    console.log(user + "typingStop");
+});
+discordbot.on('userUpdate', function (oldUser, newUser) {
+    //do stuff
+    console.log("userUpdate:" + newUser);
+});
+discordbot.on('presenceUpdate', function (oldMember, newMember) {
+    //do stuff
+    console.log("presenceUpdate:" + newMember);
+});
+discordbot.on('reconnecting', function () {
+    //do stuff
+    console.log("discord.js bot reconnecting");
+});
+discordbot.on('error', function (error) {
+    //do stuff
+    console.log(error);
+});
 function isEmpty(value) {
     return typeof value == 'string' && !value.trim() || typeof value == 'undefined' || value === null;
 }

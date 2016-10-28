@@ -20,7 +20,7 @@
 		<div id="pluginlist">
 			<Label>Plugins List</Label>
 			<ul data-bind="foreach: items, value:pluginvalue, optionsValue:pluginname">
-		   		<li><a href="#" data-bind="text: name, value:id"> </a> <button data-bind="text:btn_name,click:btn_toggle"> </button></li>
+		   		<li><a href="#" data-bind="text: name, value:id"></a> | <a href="" data-bind="attr: { href:panelurl}" target="_blank"> Open Panel </a> |  <button data-bind="text:btn_name,click:btn_toggle"> </button></li>
 			</ul>
 			<Label>Note it need to be manual restart to able to disable or enable those plugins.</Label>
 		</div>

@@ -2,6 +2,8 @@ var pluginlist;
 var PluginDataModel = function (_id, _name, _data) {
     this.id = ko.observable(_id);
     this.name = ko.observable(_name);
+    //console.log(_data.view);
+    this.panelurl = ko.observable(_data.view);
     //console.log(_name);
     this.data = _data;
     //console.log(_data);

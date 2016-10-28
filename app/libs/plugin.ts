@@ -118,8 +118,6 @@ class managePlugin{
         this.modulelist.push(_module);
 
         if(typeof _module.init === 'function'){
-            //set route page url
-            //scriptmodule.setroute(routes,app);
             //console.log("function found!");
             this.initlist.push(_module);
         }else{
@@ -127,8 +125,6 @@ class managePlugin{
         }
 
         if(typeof _module.message === 'function'){
-            //set route page url
-            //scriptmodule.setroute(routes,app);
             //console.log("function found!");
             this.messagelist.push(_module);
         }else{
@@ -137,8 +133,6 @@ class managePlugin{
 
         //route page url
         if(typeof _module.setroute === 'function'){
-            //set route page url
-            //scriptmodule.setroute(routes,app);
             //console.log("function found!");
             this.routeList.push(_module);
         }else{
@@ -171,7 +165,6 @@ class managePlugin{
 		if( typeof _module.setAfterSession === "function"){
 			this.appAfterSession.push(_module);
 		}
-
     }
 
     AssignBeforeSession(_app,_session,_config){
@@ -224,6 +217,7 @@ class managePlugin{
 
     //set route
     AssignRoute(_routes, _app){
+		console.log("routes");
         for (var i = 0; i < this.routeList.length; i++ ){
 			this.routeList[i].setroute(_routes,_app);
 		}

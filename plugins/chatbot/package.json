@@ -3,5 +3,6 @@
   "version":"0.0.1",
   "description":"",
   "main":"chatbot_index.js",
+  "view":"/",
   "enable":false
 }
