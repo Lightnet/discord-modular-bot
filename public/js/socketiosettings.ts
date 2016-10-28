@@ -67,8 +67,8 @@ function SaveSettings(){
 		btoken:settingsmodel.btoken(),
 		token:settingsmodel.tokenkey(),
 		current : {
-					serverid: settingsmodel.current_guild_id(),
-					servername : settingsmodel.current_guild_name(),
+					guildid: settingsmodel.current_guild_id(),
+					guildname : settingsmodel.current_guild_name(),
 					channelid : settingsmodel.current_channel_id(),
 					channelname: settingsmodel.current_channel_name()
 				}
@@ -89,8 +89,8 @@ socket.on('settings', function(data){
 			settingsmodel.password(data['config'].password);
 			settingsmodel.tokenkey(data['config'].token);
 			settingsmodel.btoken(data['config'].btoken);
-			settingsmodel.current_guild_id(data['config'].current.serverid);
-			settingsmodel.current_guild_name(data['config'].current.servername);
+			settingsmodel.current_guild_id(data['config'].current.guildid);
+			settingsmodel.current_guild_name(data['config'].current.guildname);
 			settingsmodel.current_channel_id(data['config'].current.channelid);
 			settingsmodel.current_channel_name(data['config'].current.channelname);
 		}

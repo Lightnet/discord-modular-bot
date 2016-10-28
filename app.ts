@@ -33,8 +33,8 @@ if (fs.existsSync(configpath)) {
 	    btoken: true,
 	    token: "",
 	    current: {
-	        serverid: "",
-	        servername: "",
+	        guildid: "",
+	        guildname: "",
 	        channelid: "",
 	        channelname: ""
 	    }
@@ -238,9 +238,9 @@ discordbot.on('ready', function() {
 			//console.log("bot:"+member.user.bot);
 		});
 		guild.channels.forEach(function (channel) {
-			if(channel.name == config.current.channelname && guild.name == config.current.servername){
+			if(channel.name == config.current.channelname && guild.name == config.current.guildname){
 				//console.log(channel);
-				config.current.serverid = guild.id;
+				config.current.guildid = guild.id;
 				config.current.channelid = channel.id;
 			}
 			//console.log("id:"+channel.id);

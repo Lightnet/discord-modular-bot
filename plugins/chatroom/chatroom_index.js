@@ -92,7 +92,7 @@ module.exports.socket_connect = function(_io, _socket){
             if(discordbot !=null){
 				//console.log(discordbot);
 				discordbot.guilds.forEach(function (guild) {
-					if(guild.name == configbot.current.servername){
+					if(guild.name == configbot.current.guildname){
 						guild.channels.forEach(function (channel) {
 							//console.log("channel message?");
 							//need to rework this
@@ -117,13 +117,13 @@ module.exports.socket_connect = function(_io, _socket){
         	GetGuildList(disordclient, _socket);
 			//
 			var config = plugin.getConfig();
-			console.log(config.current.serverid)
+			console.log(config.current.guildid)
 			console.log(config.current.channelid)
-			if((config.current.serverid != null)&&(config.current.channelid !=null )){
+			if((config.current.guildid != null)&&(config.current.channelid !=null )){
 				_socket.emit("server",{
 					action:"setguildchannel",
-					guildid:config.current.serverid,
-					guildname:config.current.servername,
+					guildid:config.current.guildid,
+					guildname:config.current.guildname,
 					channelid:config.current.channelid,
 					channelname:config.current.channelname
 				});
