@@ -14,6 +14,7 @@
     ],
     "files": [
         "./app.ts",
+        "./app/libs/discordhandler.ts",
         "./app/libs/plugin.ts",
         "./app/libs/socketio_module.ts",
         "./app/models/database_mongorito.ts",

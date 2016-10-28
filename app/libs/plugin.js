@@ -196,15 +196,14 @@ var managePlugin = (function () {
             this.socketdisconnectList[i].socket_disconnect(_io, _socket);
         }
     };
-    //router url set folder
-    /*
-    addAppView(_app, _view){
+    //add views
+    managePlugin.prototype.addAppView = function (_app, _view) {
         //console.log("Adding app view...");
         var views = _app.get('views');
-        views.push(_view);
+        //console.log(views);
+        views.push(_view); // need to set array string first and not a string var
         _app.set('views', views);
-    }
-    */
+    };
     //set socket.io set
     managePlugin.prototype.setSocketIO = function (_io) {
         this.io = _io;

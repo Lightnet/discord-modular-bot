@@ -236,15 +236,14 @@ class managePlugin{
         }
     }
 
-    //router url set folder
-	/*
+    //add views
     addAppView(_app, _view){
         //console.log("Adding app view...");
         var views = _app.get('views');
-	    views.push(_view);
+		//console.log(views);
+	    views.push(_view);// need to set array string first and not a string var
 	    _app.set('views', views);
     }
-	*/
 
     //set socket.io set
     setSocketIO(_io){

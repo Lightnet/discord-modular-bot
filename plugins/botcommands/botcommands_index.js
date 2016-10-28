@@ -3,21 +3,36 @@ var path = require("path");
 var fs = require('fs');
 var plugin = require("../../app/libs/plugin.js");
 var commands = [];
-var botcommand = function (_line, _callback) {
-    this.commandline = _line;
-    this.callback = _callback;
-};
+//var botcommand = function(_line,_callback){
+//this.commandline = _line;
+//this.executescript = _callback;
+//}
+var model_files = fs.readdirSync(__dirname + "/scriptcommands");
+console.log("loading scriptcommands");
+model_files.forEach(function (modelFile) {
+    if (path.extname(modelFile) == '.js') {
+        console.log('File model: ' + modelFile);
+        var _commandscript = require(__dirname + "/scriptcommands/" + modelFile);
+        console.log(_commandscript);
+        //console.log(command);
+        //console.log(typeof commandscript.commandline);
+        if ((typeof _commandscript.executescript === 'function') && (typeof _commandscript.commandline === 'string')) {
+            console.log('adding command list array');
+            commands.push(_commandscript);
+        }
+    }
+});
 var init = function () {
     //console.log(global.run);
     //console.log(global.mongorito);
     //console.log("chat bot init...");
-    var helpcommand = new botcommand("help", function (message, args) {
-        message.channel.sendMessage("help found!");
-    });
-    commands.push(helpcommand);
-    var statscommand = new botcommand("stats", function (message, args) {
-        message.channel.sendMessage("stats found!");
-    });
+    //var helpcommand = new botcommand("help",function(message,args){
+    //message.channel.sendMessage("help found!");
+    //});
+    //commands.push(helpcommand);
+    //var statscommand = new botcommand("stats",function(message,args){
+    //message.channel.sendMessage("stats found!");
+    //});
     //commands.push(statscommand);
 };
 module.exports.init = init;
@@ -32,7 +47,7 @@ function StringCommandProcessCheck(_message, callback) {
         for (var i = 0; i < commands.length; i++) {
             //console.log(commands[i].commandline);
             if (commands[i].commandline == args[1]) {
-                commands[i].callback(_message, args);
+                commands[i].executescript(_message, args);
             }
         }
         args = null;
@@ -46,9 +61,12 @@ module.exports.setroute = function (routes, app) {
     //console.log('route module');
     //add current dir plugin public folder
     app.use(express.static(__dirname + '/public'));
-    //add current dir plugin views folder
     //console.log(__dirname);
-    app.set('views', path.join(__dirname, '/views'));
+    //app.set('views', path.join(__dirname,'/views'));//do not used it will override views
+    if (plugin != null) {
+        //add current dir plugin views folder
+        plugin.addAppView(app, path.join(__dirname, '/views'));
+    }
     routes.get('/botcommands', function (req, res) {
         res.render('botcommands', {}); //render file .ejs
         //res.contentType('text/html');

@@ -9,12 +9,12 @@
 
 /// <reference path="./DefinitelyTyped/node/node.d.ts" />
 /// <reference path="./app/libs/plugin.ts" />
+/// <reference path="./app/libs/discordhandler.ts" />
 //console.log("discord.js bot app modular");
-if(typeof __dirname == 'undefined'){
-  __dirname = ".";
-}
+if(typeof __dirname == 'undefined'){__dirname = ".";}
 
 console.log(process.versions);
+
 var path = require('path');
 var fs = require('fs');
 var configpath = './app/config.json';
@@ -183,9 +183,11 @@ if(configweb){
 	// ==============================================
 	// Route Pages/URL
 	// ==============================================
-	//Views needs to be added in order else it give an error say index not found
-	plugin.AssignRoute(routes, app);// this need to be added first since
-	app.set('views', path.join(__dirname, '/app/views'));//This needs to be added last
+	//this first add for the view
+	app.set('views', [path.join(__dirname, '/app/views')]);//set up array by using []
+	plugin.AssignRoute(routes, app);
+	//display view array folders
+	console.log(app.get('views'));
 	//set routes
     app.use('/', routes);
 
@@ -262,36 +264,8 @@ discordbot.on('message', message => {
 		}
 	});
 });
-
-discordbot.on('typingStart', (channel, user) => {
-  //do stuff
-    console.log("typingStart: " + user);
-});
-
-discordbot.on('typingStop', (channel, user) => {
-  //do stuff
-  console.log("typingStop:" + user);
-});
-
-discordbot.on('userUpdate', (oldUser, newUser) => {
-  //do stuff
-  console.log("userUpdate:" + newUser);
-});
-
-discordbot.on('presenceUpdate', (oldMember, newMember) => {
-  //do stuff
-  console.log("presenceUpdate:" + newMember);
-});
-
-discordbot.on('reconnecting', () => {
-  //do stuff
-  console.log("discord.js bot reconnecting");
-});
-
-discordbot.on('error', (error) => {
-  //do stuff
-  console.log(error);
-});
+//setup some basic stuff
+require('./app/libs/discordhandler')(discordbot);
 
 function isEmpty(value) {
 	return typeof value == 'string' && !value.trim() || typeof value == 'undefined' || value === null;
