@@ -1,8 +1,8 @@
 {
-    "name": "chat room package",
+    "name": "Chat Message",
     "version": "0.0.1",
     "description": "",
-    "main": "chatroom_index.js",
+    "main": "chatmessage_index.js",
 	"view":"/",
     "enable": true
 }

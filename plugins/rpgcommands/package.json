@@ -1,0 +1,8 @@
+{
+    "name": "RPG Command Plugin",
+    "version": "0.0.1",
+    "description": "",
+    "main": "rpgcommands_index.js",
+	"view":"/rpgcommands",
+    "enable": true
+}

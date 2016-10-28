@@ -75,7 +75,7 @@ var managePlugin = (function () {
     };
     //get current database type
     managePlugin.prototype.getDatabase = function (_type) {
-        if (_type === void 0) { _type = ""; }
+        if (_type === void 0) { _type = null; }
         if (_type != null) {
             if (this.database[_type] != null) {
                 return this.database[_type];
@@ -83,6 +83,9 @@ var managePlugin = (function () {
             else {
                 throw new Error('Database type not setup!');
             }
+        }
+        else {
+            return this.database[this.databasetype];
         }
     };
     managePlugin.prototype.addplugin = function (_config, _path) {

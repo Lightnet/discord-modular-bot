@@ -46,7 +46,7 @@ module.exports.init = init;
 function StringCommandProcessCheck(_message, callback) {
     //console.log(_message.content.search('/!'));
     //console.log(_message);
-    if (_message.content.search('/bot') == 0) {
+    if (_message.content.search('/!') == 0) {
         //console.log("found #!");
         //get message then used channel function to send message
         //_message.channel.sendMessage("echo found!");
@@ -74,8 +74,8 @@ module.exports.setroute = function (routes, app) {
         //add current dir plugin views folder
         plugin.addAppView(app, path.join(__dirname, '/views'));
     }
-    routes.get('/botcommands', function (req, res) {
-        res.render('botcommands', {}); //render file .ejs
+    routes.get('/rpgcommands', function (req, res) {
+        res.render('rpgcommands', {}); //render file .ejs
         //res.contentType('text/html');
         //res.send('Hello World!');
         //res.render('test',{});

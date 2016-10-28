@@ -7,8 +7,12 @@
     Information: Please read the readme.md file for more information.
 */
 
-module.exports.commandline = "stats";
+var plugin = require("../../../app/libs/plugin.js");
+
+module.exports.commandline = "help";
 
 module.exports.executescript = function(message,args){
-		message.channel.sendMessage("stats found!");
+	message.channel.sendMessage("Help found! \n Test");
+	//message.reply('help found!');
+	console.log(message.channel);
 };

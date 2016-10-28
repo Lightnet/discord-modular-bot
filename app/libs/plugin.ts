@@ -93,14 +93,16 @@ class managePlugin{
     }
 
     //get current database type
-    getDatabase(_type:string = ""){
+    getDatabase(_type:string = null){
         if(_type != null){
             if(this.database[_type] !=null){
                 return this.database[_type];
             }else{
                 throw new Error('Database type not setup!');
             }
-        }
+        }else{
+			return this.database[this.databasetype];
+		}
     }
 
 	addplugin(_config,_path){

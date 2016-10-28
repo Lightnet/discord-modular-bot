@@ -6,7 +6,9 @@
 
     Information: Please read the readme.md file for more information.
 */
-//console.log("chat script");
+
+
+
 
 var init = function(){
   //console.log("chat room init...");

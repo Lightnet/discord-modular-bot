@@ -1,8 +1,8 @@
 {
-  "name":"randomprizeusers",
+  "name":"Random Prize Members",
   "version":"0.0.1",
   "description":"",
-  "main":"index.js",
+  "main":"randomprizemembers_index.js",
   "view":"/",
   "enable":false
 }

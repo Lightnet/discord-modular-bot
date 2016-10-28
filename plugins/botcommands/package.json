@@ -1,5 +1,5 @@
 {
-    "name": "bot command package",
+    "name": "Bot Command Plugins",
     "version": "0.0.1",
     "description": "",
     "main": "botcommands_index.js",
