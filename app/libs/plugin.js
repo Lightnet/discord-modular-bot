@@ -179,30 +179,32 @@ var managePlugin = (function () {
     };
     //set route
     managePlugin.prototype.AssignRoute = function (_routes, _app) {
-        console.log("routes");
+        //console.log("routes");
         for (var i = 0; i < this.routeList.length; i++) {
             this.routeList[i].setroute(_routes, _app);
         }
     };
     //set connection
-    managePlugin.prototype.AssignConnect = function (_io, _socket, _db) {
+    managePlugin.prototype.AssignConnect = function (_io, _socket) {
         for (var i = 0; i < this.socketconnectList.length; i++) {
-            this.socketconnectList[i].socket_connect(_io, _socket, _db);
+            this.socketconnectList[i].socket_connect(_io, _socket);
         }
     };
     //set disconnection
-    managePlugin.prototype.AssignDisconect = function (_io, _socket, _db) {
+    managePlugin.prototype.AssignDisconect = function (_io, _socket) {
         for (var i = 0; i < this.socketdisconnectList.length; i++) {
-            this.socketdisconnectList[i].socket_disconnect(_io, _socket, _db);
+            this.socketdisconnectList[i].socket_disconnect(_io, _socket);
         }
     };
     //router url set folder
-    managePlugin.prototype.addAppView = function (_app, _view) {
+    /*
+    addAppView(_app, _view){
         //console.log("Adding app view...");
         var views = _app.get('views');
         views.push(_view);
         _app.set('views', views);
-    };
+    }
+    */
     //set socket.io set
     managePlugin.prototype.setSocketIO = function (_io) {
         this.io = _io;

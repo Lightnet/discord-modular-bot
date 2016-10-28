@@ -12,27 +12,26 @@
 var plugin = require('./plugin.js');
 var fs = require('fs');
 var path = require('path');
-var cryptojs = require('crypto-js');
+//var cryptojs = require('crypto-js');
 
 module.exports = function(_io){
 	//console.log("[ = socket.io = ]");
     io = _io;
-	var db;
 
     io.on('connection', function(socket){// client listen when connect with the user client web browser
         //console.log('a user connected');
 		//console.log(socket);
 		//add on socket.io
-		plugin.AssignConnect(io, socket, db);
+		plugin.AssignConnect(io, socket);
 		//socket.on('ping', function(){socket.emit('pong');});
 
 		//var hash = crypto.createHash('md5').update(socket.id).digest('hex');//md5 hash
-        var hash = cryptojs.HmacMD5(socket.id, 'secret').toString();
+        //var hash = cryptojs.HmacMD5(socket.id, 'secret').toString();
 		//var hash = socket.id;//md5 hash
 		//console.log("MDR5:"+hash);
-		socket.emit('iduser',hash);//send out userid
-		socket.userid = "player_" + hash;
-		hash = null;//make null since
+		//socket.emit('iduser',hash);//send out userid
+		//socket.userid = "player_" + hash;
+		//hash = null;//make null since
 
 		socket.on('plugins',function(data){
 			if(data !=null){
@@ -53,7 +52,6 @@ module.exports = function(_io){
 							pluginlist[data['id']].config.enable = data['pluginstate'];
 							//console.log(pluginlist[data['id']]);
 							//need to write file here
-
 							fs.writeFile(pluginlist[data['id']].path, JSON.stringify(pluginlist[data['id']].config, null, 4), function(err) {
 							    if(err) {
 							      console.log(err);
@@ -96,7 +94,7 @@ module.exports = function(_io){
 		socket.on('disconnect', function(data){
 			//console.log('disconnect message: ' + data);
 			//console.log(socket);
-			plugin.AssignDisconect(io, socket,db);
+			plugin.AssignDisconect(io, socket);
 		})
     });
 	//console.log("[ = socket.io config... = ]");

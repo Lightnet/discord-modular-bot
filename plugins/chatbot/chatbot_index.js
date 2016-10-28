@@ -62,7 +62,7 @@ function ProcessText(_message, callback) {
     }
 }
 var message = function (_message, _callback) {
-    console.log("discord message...");
+    //console.log("discord message...");
     /*
     if(plugin.getChanelID() == _channelID){
         ProcessText(_message,function(textstring){
@@ -84,7 +84,7 @@ module.exports.message = message;
 //===============================================
 // Socket.io
 //===============================================
-module.exports.socket_connect = function (_io, _socket, _db) {
+module.exports.socket_connect = function (_io, _socket) {
     console.log("socket message...");
     //_socket.on('message', function (data) {
     //});

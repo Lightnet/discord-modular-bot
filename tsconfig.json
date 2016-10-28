@@ -16,6 +16,7 @@
         "./app.ts",
         "./app/libs/plugin.ts",
         "./app/libs/socketio_module.ts",
+        "./app/models/database_mongorito.ts",
         "./app/routes/index.ts",
         "./plugins/botcommands/botcommands_index.ts",
         "./plugins/chatbot/chatbot_index.ts",

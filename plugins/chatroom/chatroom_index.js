@@ -74,11 +74,12 @@ function GetGuildList(discordbot, client){
 				type:channel.type,
 			});
 		});
+		//send list guilds that you joined
 		client.emit("server",{action:"addguild",data:Server});
 	});
 }
 
-module.exports.socket_connect = function(_io, _socket,_db){
+module.exports.socket_connect = function(_io, _socket){
     //console.log("socket message...");
 	_socket.on('message', function (data) {
 	    //console.log('data');
@@ -106,7 +107,7 @@ module.exports.socket_connect = function(_io, _socket,_db){
 	});
 
   	_socket.on('getguildlist', function (data) {
-    	//console.log("getguildlist");
+    	console.log("getguildlist");
     	var disordclient  = plugin.getdiscordclient();
     	//console.log(disordclient);
     	if(disordclient !=null){
@@ -114,12 +115,24 @@ module.exports.socket_connect = function(_io, _socket,_db){
 		    _socket.emit("server",{action:"cleanguilds"});
 			//get list
         	GetGuildList(disordclient, _socket);
+			//
+			var config = plugin.getConfig();
+			console.log(config.current.serverid)
+			console.log(config.current.channelid)
+			if((config.current.serverid != null)&&(config.current.channelid !=null )){
+				_socket.emit("server",{
+					action:"setguildchannel",
+					guildid:config.current.serverid,
+					guildname:config.current.servername,
+					channelid:config.current.channelid,
+					channelname:config.current.channelname
+				});
+			}
     	}
     	//console.log('data');
     	//console.log(data);
   	});
 };
-
 //===============================================
 //
 //===============================================

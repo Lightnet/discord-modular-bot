@@ -24,14 +24,14 @@ var init = function(){
 	//console.log(global.run);
 	//console.log(global.mongorito);
   	//console.log("chat bot init...");
-	//var helpcommand = new botcommand("help",function(message,args){
-		//message.channel.sendMessage("help found!");
-	//});
-	//commands.push(helpcommand);
+	var helpcommand = new botcommand("help",function(message,args){
+		message.channel.sendMessage("help found!");
+	});
+	commands.push(helpcommand);
 
-	//var statscommand = new botcommand("stats",function(message,args){
-		//message.channel.sendMessage("stats found!");
-	//});
+	var statscommand = new botcommand("stats",function(message,args){
+		message.channel.sendMessage("stats found!");
+	});
 	//commands.push(statscommand);
 }
 module.exports.init = init;
@@ -45,7 +45,7 @@ function StringCommandProcessCheck(_message,callback){
 		//_message.channel.sendMessage("echo found!");
 		var args = _message.content.split(" ");
 		for(var i = 0; i < commands.length;i++){
-			console.log(commands[i].commandline);
+			//console.log(commands[i].commandline);
 			if(commands[i].commandline == args[1]){
 				commands[i].callback(_message,args);
 			}
@@ -58,11 +58,11 @@ function StringCommandProcessCheck(_message,callback){
 // route
 //===============================================
 module.exports.setroute = function(routes, app){
-	console.log('route module');
+	//console.log('route module');
 	//add current dir plugin public folder
 	app.use(express.static(__dirname + '/public'));
 	//add current dir plugin views folder
-	console.log(__dirname);
+	//console.log(__dirname);
 	app.set('views', path.join(__dirname,'/views'));
 
 	routes.get('/botcommands', function (req, res) {
@@ -90,6 +90,6 @@ module.exports.message = message;
 //===============================================
 // Socket.io
 //===============================================
-module.exports.socket_connect = function(_io, _socket,_db){
+module.exports.socket_connect = function(_io, _socket){
 	//console.log("socket message...");
 };

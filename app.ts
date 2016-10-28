@@ -19,11 +19,13 @@ var path = require('path');
 var fs = require('fs');
 var configpath = './app/config.json';
 var config;
-
+console.log("init config");
 if (fs.existsSync(configpath)) {
+	console.log("config found!");
     config = require(configpath);
 	console.log('config file exists');
 }else{
+	console.log("config not found!");
 	config = {
 		autorun : true,
 	    email: "",
@@ -37,7 +39,7 @@ if (fs.existsSync(configpath)) {
 	        channelname: ""
 	    }
 	}
-
+	console.log("creating config file.");
 	fs.writeFile(configpath, JSON.stringify(config, null, 4), function(err) {
 		if(err) {
 		  console.log(err);
@@ -49,30 +51,6 @@ if (fs.existsSync(configpath)) {
 
 var express = require('express');
 var app = express();
-
-function enable_multiple_view_folders() {
-    // Monkey-patch express to accept multiple paths for looking up views.
-    // this path may change depending on your setup.
-    var View = require("./node_modules/express/lib/view"),
-        lookup_proxy = View.prototype.lookup;
-
-    View.prototype.lookup = function(viewName) {
-        var context, match;
-        if (this.root instanceof Array) {
-            for (var i = 0; i < this.root.length; i++) {
-                context = {root: this.root[i]};
-                match = lookup_proxy.call(context, viewName);
-                if (match) {
-                    return match;
-                }
-            }
-            return null;
-        }
-        return lookup_proxy.call(this, viewName);
-    };
-}
-
-//enable_multiple_view_folders();
 
 var routes = require('./app/routes/index');
 var http = require('http').Server(app);
@@ -86,8 +64,9 @@ var connect = require('connect');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-//var discordclient = require('discord.io');
+//discord api
 var discordjs = require('discord.js');
+//discord bot
 var discordbot; //
 
 function timeConverter(){
@@ -112,10 +91,12 @@ plugin.setConfig(config);
 //===============================================
 // Models
 //===============================================
+console.log("//====");
+console.log("Loading model files:");
 var model_files = fs.readdirSync(__dirname + "/app/models");
 model_files.forEach(function (modelFile) {
     if (path.extname(modelFile) == '.js') {
-        console.log('loading model: ' + modelFile);
+        console.log('File model: ' + modelFile);
         require(__dirname + "/app/models/" + modelFile);
     }
 });
@@ -163,10 +144,8 @@ plugin_files.forEach(function (modelFile) {
     //console.log(plugins.length);
     //console.log(package_config);
 });
-console.log("// Plugin End");
-console.log("// =====");
-
-
+//console.log("// Plugin End");
+//console.log("// =====");
 //var routes = express.Router(); //Router is for page access
 var configweb  = true; //place holder
 
@@ -235,14 +214,14 @@ function init_web_server(){
 discordbot = new discordjs.Client();
 
 //set up ready variable
-console.log("Initialize Discordapp API!");
+console.log("Initialize Discordjs API!");
 discordbot.on('ready', function() {
-	console.log("bot ready!");
+	console.log("Discordjs ready!");
 	console.log(discordbot.user.username + " - [" + discordbot.user.id + "]");
     plugin.AssignInit(); //init plugin module function.
 	//set discord.js bot
     plugin.setdiscordclient(discordbot); //set discord app bot
-    //console.log(discordbot);
+    console.log(discordbot);
 	//console.log("inviteURL:" + discordbot.inviteURL );
 	console.log("inviteURL:" + "https://discordapp.com/oauth2/authorize?client_id=" + discordbot.user.id + "&scope=bot");
 	//io.emit('discordready');
@@ -276,7 +255,6 @@ discordbot.on('ready', function() {
 
 //listen to the message from all channels that is link to the account
 discordbot.on('message', message => {
-	//console.log("channelID:"+channelID + " userID:" + userID + " user:" + user);
 	//console.log("message:"+message);
 	plugin.AssignMessage(message, function(text){
 		if(text !=null){ //make sure the string text
@@ -287,12 +265,12 @@ discordbot.on('message', message => {
 
 discordbot.on('typingStart', (channel, user) => {
   //do stuff
-    console.log(user + "typingStart");
+    console.log("typingStart: " + user);
 });
 
 discordbot.on('typingStop', (channel, user) => {
   //do stuff
-  console.log(user + "typingStop");
+  console.log("typingStop:" + user);
 });
 
 discordbot.on('userUpdate', (oldUser, newUser) => {

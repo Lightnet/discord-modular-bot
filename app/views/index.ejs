@@ -22,7 +22,7 @@
 		}
       </script>
 	</HEAD>
-	<BODY id="serverlist">
+	<BODY>
 		<nav class="navbar navbar-inverse">
      		<div class="container-fluid">
 				<div class="navbar-header">
@@ -49,64 +49,57 @@
 		 	</div>
 		</nav>
 
-<div id="wrapper">
-     <div class="container-fluid text-center">
-		 <div class="row content">
+		<div id="wrapper">
+		     <div class="container-fluid text-center">
+				 <div class="row content">
 
-			 <div id="sidebar-wrapper">
-				 <!--
-				 <button onclick="getguildlist();">Refresh</button>
-			 	-->
-				 <select data-bind="foreach: servers, value:serverid, optionsValue:servername, optionsText:servername">
-					<option data-bind="text: name, value:id"></option>
-				 </select>
-				 <ul id="channellist" class="list-group" data-bind="foreach: channels">
-					 <li class="list-group-item"> <span data-bind="css: icon"> <a href="#" data-bind="text: name"></a> </li>
-				 <ul>
-		 	</div>
-
-			<div id="page-content-wrapper">
-
-				<div class="container-fluid">
-					<div class="row">
-						 <div class="col-sm-8 text-left">
-							 <div class="panel-body">
-								 Chat Messages:
-								 <div id="chatboxmessage" style="height:200px;background-color: gray;overflow-y: auto;">
+					 <div id="sidebar-wrapper">
+						 <!-- <button onclick="getguildlist();">Refresh</button> -->
+						 <select id="guildsviewmodel" data-bind="foreach: guilds, value:guildid, optionsValue:servername, optionsText:guildname">
+							<option data-bind="text: name, value:id"></option>
+						 </select>
+						 <ul id="channelsviewmodel" class="list-group" data-bind="foreach: channels">
+							 <li class="list-group-item"> <span data-bind="css: icon"> <a href="#" data-bind="text: name"></a> </li>
+						 <ul>
+				 	</div>
+					<div id="page-content-wrapper">
+						<div class="container-fluid">
+							<div class="row">
+								 <div class="col-sm-8 text-left">
+									 <div class="panel-body">
+										 #<label id="guildview" data-bind="text:name"> </label>
+										 <br>#<label id="channelview" data-bind="text:name"> </label>
+										 <div id="chatboxmessage" style="height:200px;background-color: gray;overflow-y: auto;">
+										 </div>
+										 <div>
+										 	<input id="chatinputtext" onkeypress="return ChatInputHandle(event)" value="Test" size="40"></input>
+										 	<button id="chatbutton" onclick="ButtonChatMessage();">Send</button>
+										 </div>
+									 </div>
 								 </div>
-								 <div>
-								 	<input id="chatinputtext" onkeypress="return ChatInputHandle(event)" value="Test" size="40"></input>
-								 	<button id="chatbutton" onclick="ButtonChatMessage();">Send</button>
-								 </div>
-							 </div>
-						 </div>
-
-
-						 <div class="collapse" id="memebersNavbar">
-							 <div class="col-sm-3 sidenav">
-								 Members:
-								 <ul id="memberslist" class="list-group" data-bind="foreach: members">
-									 <li class="list-group-item"> <span class="glyphicon glyphicon-user"></span> <a href="#" data-bind="text: name"></a> </li>
-							     <ul>
+								 <div class="collapse" id="memebersNavbar">
+									 <div class="col-sm-3 sidenav">
+										 Members:
+										 <ul id="membersviewmodel" class="list-group" data-bind="foreach: members">
+											 <li class="list-group-item"> <span class="glyphicon glyphicon-user"></span> <a href="#" data-bind="text: name"></a> </li>
+									     <ul>
+									</div>
+								</div>
 							</div>
-						</div>
-					</div>
-			  </div>
-		 </div>
+					  </div>
+				 </div>
 
-	</div>
-</div>
-	<footer class="container-fluid text-center">
-  		<p>Footer Text</p>
-	</footer>
-
-	<!-- Menu Toggle Script -->
-    <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    </script>
-
+			</div>
+		</div>
+		<footer class="container-fluid text-center">
+	  		<p>Footer Text</p>
+		</footer>
+		<!-- Menu Toggle Script -->
+	    <script>
+		    $("#menu-toggle").click(function(e) {
+		        e.preventDefault();
+		        $("#wrapper").toggleClass("toggled");
+		    });
+	    </script>
    </BODY>
 </HTML>

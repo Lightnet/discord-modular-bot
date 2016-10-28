@@ -1,3 +1,18 @@
+var DataID = function () {
+    this.name = ko.observable();
+    this.id = ko.observable();
+};
+//guilds model
+var GuildDataModel = function (_id, _name, _obj) {
+    this.name = ko.observable(_name);
+    this.id = ko.observable(_id);
+    this.channels = ko.observableArray();
+    this.members = ko.observableArray();
+    this.data = _obj;
+};
+//guild view
+var guildview = new DataID();
+//member model
 var MemberDataModel = function (_id, _name, _data) {
     if (_data.bot == true) {
         this.name = ko.observable(_name + " [Bot]");
@@ -8,14 +23,12 @@ var MemberDataModel = function (_id, _name, _data) {
     this.id = ko.observable(_id);
     this.data = _data;
 };
-//server model
-var ServerDataModel = function (_id, _name, _obj) {
-    this.name = ko.observable(_name);
-    this.id = ko.observable(_id);
-    this.channels = ko.observableArray();
-    this.members = ko.observableArray();
-    this.data = _obj;
+//member view
+var MembersViewModel = function () {
+    this.members = ko.observableArray([]);
 };
+// member view model
+var membersviewmodel = new MembersViewModel();
 //Channel model
 var ChannelDataModel = function (_id, _name, _obj) {
     this.name = ko.observable(_name);
@@ -31,74 +44,44 @@ var ChannelDataModel = function (_id, _name, _obj) {
     }
     this.data = _obj;
 };
-var ServerListModel = function () {
-    this.serverid = ko.observable();
-    this.servername = ko.observable();
-    this.items = ko.observableArray([]); //server list data
-    this.members = ko.observableArray([]); //set member to display
-    this.channels = ko.observableArray([]); //set channel to display
-    this.servers = ko.observableArray([]); //set server list to display
+//channel view
+var channelview = new DataID();
+//channel list
+var ChannelsViewModel = function () {
+    this.channels = ko.observableArray([]);
+};
+//channel view model
+var channelsviewmodel = new ChannelsViewModel();
+// guild view model
+var GuildsViewModel = function () {
+    this.guildid = ko.observable();
+    this.guildname = ko.observable();
+    this.guilds = ko.observableArray([]); //set server list to display
     var self = this;
     this.additem = function (_object) {
-        this.items.push(_object);
+        this.guilds.push(_object);
     };
-    this.serverid.subscribe(function (newValue) {
+    this.guildid.subscribe(function (newValue) {
         //console.log("subscribe server id");
-        // Handle a change here, e.g. update something on the server with Ajax.
-        //alert('myfield changed to ' + newValue);
-        //console.log(newValue);
-        //console.log(self.items());
-        for (i in self.items()) {
-            //console.log(server);
-            //console.log(self.items()[i]);
-            if (self.items()[i].id() == newValue) {
-                //console.log(self.items()[i]);
-                //console.log("found!");
-                //console.log(self.items()[i].members());
-                self.members(self.items()[i].members());
-                self.items()[i].channels().sort(function (a, b) { return a.type() > b.type(); });
-                self.channels(self.items()[i].channels());
+        for (i in self.guilds()) {
+            if (self.guilds()[i].id() == newValue) {
+                if (membersviewmodel != null) {
+                    membersviewmodel.members(self.guilds()[i].members());
+                }
+                self.guilds()[i].channels().sort(function (a, b) { return a.type() > b.type(); });
+                if (channelsviewmodel != null) {
+                    channelsviewmodel.channels(self.guilds()[i].channels());
+                }
             }
         }
     });
-    this.selectserverid = function (_id) {
-        //console.log("selected server id");
-        for (i in self.items()) {
-            //console.log(server);
-            //console.log(self.items()[i]);
-            if (self.items()[i].id() == _id) {
-                //console.log(self.items()[i]);
-                //console.log(self.items()[i].name());
-                //this.servername(self.items()[i].name());
-                //console.log("found!");
-                //console.log(self.items()[i].members());
-                this.servername(self.items()[i].name());
-                this.serverid(self.items()[i].id());
-                self.members(self.items()[i].members()); //set current member server
-                self.items()[i].channels().sort(function (a, b) { return a.type() > b.type(); });
-                self.channels(self.items()[i].channels()); //set current channel server
-                self.servers(self.items()); //server list
-            }
-        }
-    };
-    this.getserverlist = function () {
-        self.servers(self.items()); //server list
-    };
     this.clearserver = function () {
-        this.items([]);
-        this.members([]);
-        this.channels([]);
-        this.servers([]);
-    };
-    this.clearitem = function () {
-        this.items = ko.observableArray([]);
-    };
-    this.getdefault = function () {
-        //console.log(self.servers());
-        if (self.servers().length == 1) {
-            self.members(self.items()[0].members());
-            self.items()[0].channels().sort(function (a, b) { return a.type() > b.type(); });
-            self.channels(self.items()[0].channels());
+        this.guilds([]);
+        if (membersviewmodel != null) {
+            membersviewmodel.members([]);
+        }
+        if (channelsviewmodel != null) {
+            channelsviewmodel.channels([]);
         }
     };
 };
@@ -111,10 +94,12 @@ socket.on('connect', function () {
     console.log('server connected');
     socket.emit('getguildlist');
 });
-socket.on('event', function (data) {
+/*
+socket.on('event', function(data){
     console.log('event');
     console.log(data);
 });
+*/
 socket.on('disconnect', function () {
     console.log('server disconnected');
 });
@@ -143,26 +128,31 @@ socket.on('server', function (data) {
     if (data != null) {
         if (data['action'] == "cleanguilds") {
             //console.log("server clean guilds");
-            serverlist.clearserver();
+            guildsviewmodel.clearserver();
         }
         if (data['action'] == "addguild") {
             //console.log("server addguild");
-            var cserver = data['data'];
-            var _serverdata = new ServerDataModel(data['data'].id, data['data'].name, data['data']);
+            var guilddata = data['data'];
+            var _guilddata = new GuildDataModel(data['data'].id, data['data'].name, data['data']);
             //console.log(__server.name());
-            for (var i = 0; i < cserver.members.length; i++) {
-                //console.log(cserver.members[i].name);
-                var member = new MemberDataModel(cserver.members[i].id, cserver.members[i].name, cserver.members[i]);
-                _serverdata.members.push(member);
+            for (var i = 0; i < guilddata.members.length; i++) {
+                //console.log(guilddata.members[i].name);
+                var member = new MemberDataModel(guilddata.members[i].id, guilddata.members[i].name, guilddata.members[i]);
+                _guilddata.members.push(member);
             }
-            for (var i = 0; i < cserver.channels.length; i++) {
-                //console.log(cserver.channels[i].name);
-                var channel = new ChannelDataModel(cserver.channels[i].id, cserver.channels[i].name, cserver.channels[i]);
-                _serverdata.channels.push(channel);
+            for (var i = 0; i < guilddata.channels.length; i++) {
+                //console.log(guilddata.channels[i].name);
+                var channel = new ChannelDataModel(guilddata.channels[i].id, guilddata.channels[i].name, guilddata.channels[i]);
+                _guilddata.channels.push(channel);
             }
-            serverlist.additem(_serverdata);
-            serverlist.getserverlist();
-            serverlist.getdefault();
+            guildsviewmodel.additem(_guilddata);
+        }
+        if (data['action'] == "setguildchannel") {
+            guildsviewmodel.guildid(data['guildid']);
+            guildview.id(data['guildid']);
+            guildview.name(data['guildname']);
+            channelview.id(data['channelid']);
+            channelview.name(data['channelname']);
         }
     }
 });
@@ -208,7 +198,7 @@ function InputChatText(_text) {
     }
 }
 //create variable div to add to chat message
-var serverlist = new ServerListModel();
+var guildsviewmodel = new GuildsViewModel();
 //Event
 function addEvent(element, eventName, fn) {
     if (element.addEventListener)
@@ -219,8 +209,11 @@ function addEvent(element, eventName, fn) {
 //key bind to models on on load event
 addEvent(window, 'load', function () {
     //console.log("BIND KO");
-    ko.applyBindings(serverlist, document.getElementById("serverlist"));
-    //ko.applyBindings(serverlist,document.getElementById("memberslist"));
+    ko.applyBindings(guildview, document.getElementById("guildview"));
+    ko.applyBindings(channelview, document.getElementById("channelview"));
+    ko.applyBindings(guildsviewmodel, document.getElementById("guildsviewmodel"));
+    ko.applyBindings(membersviewmodel, document.getElementById("membersviewmodel"));
+    ko.applyBindings(channelsviewmodel, document.getElementById("channelsviewmodel"));
 });
 //===============================================
 //
