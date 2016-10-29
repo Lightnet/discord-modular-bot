@@ -14,7 +14,7 @@ var Model = database.Model;
 var Post = Model.extend({
     collection: 'posts'
 });
-database.connect('mongodb://localhost:27017/blog');
+database.connect('mongodb://localhost:27017/rpg');
 plugin.addDatabase({type:'mongodb',database:database});
 
 /*

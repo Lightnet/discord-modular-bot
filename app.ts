@@ -37,7 +37,15 @@ if (fs.existsSync(configpath)) {
 	        guildname: "",
 	        channelid: "",
 	        channelname: ""
-	    }
+	    },
+		database:{
+				url:"",
+				port:0,
+				username:"",
+				password:"",
+				schema:"",
+				access:"url"
+		}
 	}
 	console.log("creating config file.");
 	fs.writeFile(configpath, JSON.stringify(config, null, 4), function(err) {

@@ -37,6 +37,14 @@ else {
             guildname: "",
             channelid: "",
             channelname: ""
+        },
+        database: {
+            url: "",
+            port: 0,
+            username: "",
+            password: "",
+            schema: "",
+            access: "url"
         }
     };
     console.log("creating config file.");
