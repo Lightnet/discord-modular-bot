@@ -32,11 +32,11 @@ module.exports.executescript = function(message,args){
 				bot:message.author.bot,
 				status:message.author.status
 			});
-
 			yield player.save();
 			//console.log("created!");
 			message.channel.sendMessage("created stats");
 		}else{
+			console.log(players[0].attributes);
 			message.channel.sendMessage("stats found!");
 		}
 		players = null;

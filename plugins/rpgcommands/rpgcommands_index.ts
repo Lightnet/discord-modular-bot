@@ -7,7 +7,7 @@
     Information: Please read the readme.md file for more information.
 */
 
-declare var global;
+declare var global:any;
 
 var express = require('express');
 var path = require("path");
