@@ -132,20 +132,20 @@ plugin_files.forEach(function (modelFile) {
 	      	var package_main = package_filepath + package_config.main;//main script
 	      	try {
 	        	fs.accessSync(package_main, fs.F_OK);
-	        	var packagescript  = require(package_main);
+	        	var packagescript = require(package_main);
 	        	//add plugin list
 	        	plugin.addModule(packagescript);
 	      	} catch (e) {
 	        	// It isn't accessible
 	        	console.log(package_main);
-	        	console.log("Plugin no main file js!" + modelFile);
+	        	console.log("%c Plugin no main file js!" + modelFile,'background: #222; color: #bada55');
 	        	console.log(e);
 	      	}
 		}
 	} catch (e) {
 		// It isn't accessible
       	console.log(package_filename);
-      	console.log("Plugin no file package!" + modelFile);
+      	console.log("%c Plugin no file package!" + modelFile,'background: #222; color: #bada55');
       	console.log(e);
     }
     //plugins.push(packagescript);

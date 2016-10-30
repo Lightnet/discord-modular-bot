@@ -8,8 +8,78 @@
 */
 var fs = require('fs');
 var configpath = __dirname + '/../config.json';
-console.log(configpath);
+//console.log(configpath);
 var config = require('../config.json');
+
+//client, message from listen, channel seearch from client
+function findall(discordbot, message, channel, args){
+	channel.fetchMessages().then(messages =>{
+		//console.log(messages.size);
+		//console.log(messages);
+		//need to convert to json some how?
+		messages.forEach(function(mg){
+			console.log(mg);
+		});
+	});
+};
+//delete is part of the nodejs so it name is used
+function remove(discordbot, message, channel, args){
+	channel.fetchMessages().then(messages =>{
+		//console.log(messages.size);
+		//console.log(messages);
+		//db query delete {"test":"testme"}
+		var index = message.content.search('delete');
+		var _message = message.content.substr(index+7,message.content.length);
+		var _objm = JSON.parse(_message);
+		//console.log(_message);
+		console.log(_objm);
+		var objvalue;
+		var objvar;
+		for(value in _objm){
+			console.log("value:"+value + ":" + _objm[value]);
+			objvalue = value;
+			objvar = _objm[value];
+		}
+		//console.log(Object);
+
+		//need to convert to json some how?
+		messages.forEach(function(mg){
+			//console.log(mg.content);
+			console.log(mg);
+			var _obj = JSON.parse(mg.content);
+			//console.log(_obj);
+			try{
+				if(_obj[objvalue] !=null){
+					if(_obj[objvalue] == objvar){
+						console.log("found!");
+						mg.delete();
+					}
+				}
+			}catch(e){
+				console.log('ERROR object Value');
+			}
+		});
+		objvalue = null;
+		objvar = null;
+		index = null;
+		_message = null;
+		_objm = null;
+		_obj = null;
+	});
+};
+
+//need to fixed filter and args
+function insert(discordbot, message, channel, args){
+	//db query insert {"test": "testme"}
+	console.log(message);
+	console.log(channel);
+	var index = message.content.search('insert');
+	console.log(index);
+	var _string = message.content.substr(index+7,message.content.length);
+	console.log("|"+_string);
+
+	channel.sendMessage(_string);
+};
 
 
 module.exports.commandline = "query";
@@ -20,7 +90,7 @@ module.exports.executescript = function(message,args){
 	//console.log("data?");
 	//console.log(message);
 	var discordbot = plugin.getdiscordclient();
-	console.log(discordbot);
+	//console.log(discordbot);
 	if(discordbot !=null){
 		//if id key is not assign serach for guild and channel text name
 		if((config.databaseguildid == "")|| (config.databasechannelid == "")){
@@ -46,16 +116,23 @@ module.exports.executescript = function(message,args){
 			});
 		}else{//console.log('other?');
 			//channel check
+			console.log(args);
 			if(config.databasechannelid != ""){
 				var channel = discordbot.channels.get(config.databasechannelid);
 				if(channel !=null){
 					//console.log("found!");
 					//console.log(channel);
-					channel.fetchMessages().then(messages =>{
-						console.log(messages.size);
-						console.log(messages);
-						//need to conver to json some how?
-					});
+					if(args[2] != null){
+						if(args[2] == "findall"){
+							findall(discordbot,message,channel,args);
+						}
+						if(args[2] == "insert"){
+							insert(discordbot,message,channel,args);
+						}
+						if(args[2] == "delete"){
+							remove(discordbot,message,channel,args);
+						}
+					}
 				}
 			}
 		}

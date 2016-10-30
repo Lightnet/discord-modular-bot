@@ -39,8 +39,8 @@ var helpcommand = {
 	commandline:'help',
 	scriptparams:'help',
 	executescript:function(message,args){
-		console.log(message);
-		console.log(commandlist);
+		//console.log(message);
+		//console.log(commandlist);
 		var _textmessage = '';
 		_textmessage += 'RPG Text Basics:\n`help commands:\n';
 		for(var i = 0; i < commandlist.length;i++){
@@ -53,14 +53,14 @@ var helpcommand = {
 }
 commands.push(helpcommand);
 
-var init = function(){};
-module.exports.init = init;
+//var init = function(){};
+//module.exports.init = init;
 
 function StringCommandProcessCheck(_message,callback){
 	//console.log(_message.content.search('/!'));
 	//console.log(_message);
 	if(_message.content.search(config.promptcommand) == 0){//first index only in text line lenght
-		console.log(config.promptcommand);
+		//console.log(config.promptcommand);
 		//get message then used channel function to send message
 		//_message.channel.sendMessage("echo found!");
 		var args = _message.content.split(" ");

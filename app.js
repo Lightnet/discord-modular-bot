@@ -133,7 +133,7 @@ plugin_files.forEach(function (modelFile) {
             catch (e) {
                 // It isn't accessible
                 console.log(package_main);
-                console.log("Plugin no main file js!" + modelFile);
+                console.log("%c Plugin no main file js!" + modelFile, 'background: #222; color: #bada55');
                 console.log(e);
             }
         }
@@ -141,7 +141,7 @@ plugin_files.forEach(function (modelFile) {
     catch (e) {
         // It isn't accessible
         console.log(package_filename);
-        console.log("Plugin no file package!" + modelFile);
+        console.log("%c Plugin no file package!" + modelFile, 'background: #222; color: #bada55');
         console.log(e);
     }
     //plugins.push(packagescript);
