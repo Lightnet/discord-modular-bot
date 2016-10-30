@@ -7,17 +7,10 @@
     Information: Please read the readme.md file for more information.
 */
 
-var plugin = require("../../../app/libs/plugin.js");
+module.exports.commandline = "stats";
 
-module.exports.commandline = "help";
-
-module.exports.scriptparams = "help";
+module.exports.scriptparams = "stats";
 
 module.exports.executescript = function(message,args){
-	message.channel.sendMessage("Help found! \n Test");
-	//message.reply('help found!');
-
-	console.log(global.commandlist);
-
-	//console.log(message.channel);
+	message.channel.sendMessage("stats found!");
 };

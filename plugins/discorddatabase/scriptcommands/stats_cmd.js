@@ -6,9 +6,13 @@
 
     Information: Please read the readme.md file for more information.
 */
+var plugin = require("../../../app/libs/plugin.js");
 
 module.exports.commandline = "stats";
 
+module.exports.scriptparams = "stats";
+
 module.exports.executescript = function(message,args){
-		message.channel.sendMessage("stats found!");
+	//message.channel.sendMessage("stats found!");
+	console.log(message);
 };

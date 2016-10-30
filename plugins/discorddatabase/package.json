@@ -1,0 +1,8 @@
+{
+    "name": "Discord Data Base Plugin",
+    "version": "0.0.1",
+    "description": "",
+    "main": "discorddatabase.js",
+	"view":"/discorddatabase",
+    "enable": true
+}

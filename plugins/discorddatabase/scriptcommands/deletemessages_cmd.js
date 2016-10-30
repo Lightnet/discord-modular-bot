@@ -7,7 +7,9 @@
     Information: Please read the readme.md file for more information.
 */
 
-module.exports.commandline = "delete";
+module.exports.commandline = "dms";
+
+module.exports.scriptparams = "dms <amount> (limited 100)";
 
 module.exports.executescript = function(message,args){
 	var count = 0;
@@ -22,11 +24,15 @@ module.exports.executescript = function(message,args){
 		}
 	}
 	if(count > 0){
+		if(count < 101){
 		message.channel.fetchMessages({limit: count})
 			.then(messages =>{
 				//console.log(messages);
 				messages.deleteAll(10);
 			});
+		}else{
+			message.channel.sendMessage("Over Limited! 100 Max!");
+		}
 	}
 	pcount =null;
 	count = null;

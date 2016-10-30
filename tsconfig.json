@@ -21,6 +21,7 @@
         "./app/routes/index.ts",
         "./plugins/botcommands/botcommands_index.ts",
         "./plugins/chatbot/chatbot_index.ts",
+        "./plugins/discorddatabase/discorddatabase.ts",
         "./plugins/rpgcommands/rpgcommands_index.ts",
         "./public/js/socketioclient.ts",
         "./public/js/socketioplugins.ts",

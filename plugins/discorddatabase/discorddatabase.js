@@ -34,10 +34,10 @@ var helpcommand = {
     commandline: 'help',
     scriptparams: 'help',
     executescript: function (message, args) {
-        //console.log(message);
-        //console.log(commandlist);
+        console.log(message);
+        console.log(commandlist);
         var _textmessage = '';
-        _textmessage += 'Bot: \n`help commands:\n';
+        _textmessage += 'RPG Text Basics:\n`help commands:\n';
         for (var i = 0; i < commandlist.length; i++) {
             _textmessage += config.promptcommand + ' ' + commandlist[i] + '\n';
         }
@@ -53,7 +53,7 @@ function StringCommandProcessCheck(_message, callback) {
     //console.log(_message.content.search('/!'));
     //console.log(_message);
     if (_message.content.search(config.promptcommand) == 0) {
-        //console.log("found #!");
+        console.log(config.promptcommand);
         //get message then used channel function to send message
         //_message.channel.sendMessage("echo found!");
         var args = _message.content.split(" ");
@@ -71,20 +71,15 @@ function StringCommandProcessCheck(_message, callback) {
 // route
 //===============================================
 module.exports.setroute = function (routes, app) {
-    //console.log('route module');
     //add current dir plugin public folder
     app.use(express.static(__dirname + '/public'));
     //console.log(__dirname);
-    //app.set('views', path.join(__dirname,'/views'));//do not used it will override views
     if (plugin != null) {
         //add current dir plugin views folder
         plugin.addAppView(app, path.join(__dirname, '/views'));
     }
-    routes.get('/botcommands', function (req, res) {
-        res.render('botcommands', {}); //render file .ejs
-        //res.contentType('text/html');
-        //res.send('Hello World!');
-        //res.render('test',{});
+    routes.get('/discorddatabase', function (req, res) {
+        res.render('discorddatabase', {}); //render file .ejs
     });
 };
 //plugin for discord message callback
