@@ -41,7 +41,7 @@ var _character = {
 	charalignment:'neutral',
 	id:'',
 	name:'',
-	health:1,
+	health:10,
 	maxhealth:100,
 	magic:100,
 	maxmagic:100,
@@ -55,7 +55,7 @@ var _character = {
 	int:1,
 	luck:0,
 	attack:5,
-	defence:0,
+	defense:0,
 	magicattack:0,
 	magicdefence:0,
 }
@@ -64,15 +64,17 @@ module.exports.commandline = "battle";
 
 module.exports.scriptparams = "battle";
 
-function OpponentAttackDefence(currentattack,currentdefence){
-	var attack=0;
-	if(currentdefence.get('defence') == 0){
+function OpponentAttackDefense(currentattack,currentdefense){
+	var attack = 0;
+	console.log(typeof currentdefense.get('defense'));
+	if(currentdefense.get('defense') == 0){
 		attack = currentattack.get('attack')
-	}else if(currentdefence.get('defence') < currentattack.get('attack')){
-		attack = currentdefence.get('defence') - currentattack.get('attack');
-	}else if(currentdefence.get('defence') > currentattack.get('attack')){
+	}else if(currentdefense.get('defense') < currentattack.get('attack')){
+		attack = currentattack.get('attack') - currentdefense.get('defense');
+	}else if(currentdefense.get('defense') >= currentattack.get('attack')){
 		attack = 1;
 	}
+	console.log("attack:" + attack);
 	return attack;
 }
 
@@ -86,26 +88,27 @@ module.exports.executescript = function(message,args){
 		console.log("players:"+players.length);
 		if(players.length == 1){
 			console.log('found battle!');
-			var battleid =  players[0].get('battleid');
+			var battleid = players[0].get('battleid');
 			let characters = yield Character.where('id', message.author.id).find();
 			//console.log(battleid.length);
-			//console.log(battleid);
+			console.log("battleid:"+battleid);
 			if(battleid.length == 0){
 				console.log("no battleid");
 				console.log("creating battle");
 
 				if(characters[0].get('health') != 0){
 					//generate battle id
-					var battleid = Math.random();
+					var rbattleid = Math.random()*100000000000000;
 					//create battle id
-					characters[0].set('battleid',battleid);
+					characters[0].set('battleid',rbattleid);
 					yield characters[0].save();
-					players[0].set('battleid',battleid);
+					players[0].set('battleid',rbattleid);
 					yield players[0].save();
 					//create creature
 					_cc = JSON.parse(JSON.stringify(_character));
-					_cc.battleid = battleid;
+					_cc.battleid = rbattleid;
 					_cc.name = "monster";
+					_cc.defense = 5;
 					let _cd = new Character(_cc);
 					yield _cd.save();
 					message.channel.sendMessage("Encoutner Found!");
@@ -132,13 +135,13 @@ module.exports.executescript = function(message,args){
 				console.log(currentplayer);
 				console.log(currentenemy);
 				var attack = 0;
-				attack = OpponentAttackDefence(currentplayer,currentenemy);
+				attack = OpponentAttackDefense(currentplayer,currentenemy);
 				//var attack = currentenemy.get('defence') - currentplayer.get('attack');
-				console.log(attack);
+				//console.log(attack);
 				var enemy_healthremain = currentenemy.get('health') - attack;
 
 				//check enemy health
-				if(enemy_healthremain < 0){
+				if(enemy_healthremain <= 0){
 					currentenemy_name = currentenemy.get('name');
 					console.log(currentenemy);
 					yield currentenemy.remove();
@@ -154,24 +157,34 @@ module.exports.executescript = function(message,args){
 					currentenemy.set('health',enemy_healthremain);
 					yield currentenemy.save();
 				}
-				var player_healthremain = currentplayer.get('health') - attack;
-				if(currentenemy !=null){
-					attack = OpponentAttackDefence(currentenemy,currentplayer);
-					if(player_healthremain < 0){
-						player_healthremain = 0;
-						yield currentenemy.delete();
+				var player_healthremain = currentplayer.get('health');
+				//check if enemny health is above 0 health
+				if(enemy_healthremain > 0){
+					player_healthremain -= attack;
+					if(currentenemy !=null){
+						attack = OpponentAttackDefense(currentenemy,currentplayer);
+						if(player_healthremain <= 0){
+							//set health to zero
+							player_healthremain = 0;
+							//delete character from database
+							yield currentenemy.remove();
+							//set battle field to none
+							currentplayer.set('battleid',"");
+							players[0].set('battleid',"");
+						}
 						currentplayer.set('health',player_healthremain);
-						currentplayer.set('battleid',"");
-						players[0].set('battleid',"");
 					}
-					currentplayer.set('health',player_healthremain);
+					yield players[0].save();
+					yield currentplayer.save();
 				}
-				yield players[0].save();
-				yield currentplayer.save();
 				var _textmessage = "";
 
 				_textmessage += "[Battle result]\n";
-				_textmessage += "Player:["+player_healthremain+"/"+ currentplayer.get('maxhealth')+"]\n";
+				if(player_healthremain == 0){
+					_textmessage += "Player:[Defeated]\n";
+				}else{
+					_textmessage += "Player:["+player_healthremain+"/"+ currentplayer.get('maxhealth')+"]\n";
+				}
 				if(currentenemy !=null){
 					_textmessage +=  currentenemy.get('name') + ":["+enemy_healthremain+"/"+ currentenemy.get('maxhealth')+"]\n";
 				}else{

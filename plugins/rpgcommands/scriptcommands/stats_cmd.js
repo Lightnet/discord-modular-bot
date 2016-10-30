@@ -60,7 +60,7 @@ var _character = {
 	int:1,
 	luck:0,
 	attack:5,
-	defence:0,
+	defense:0,
 	magicattack:0,
 	magicdefence:0,
 }
