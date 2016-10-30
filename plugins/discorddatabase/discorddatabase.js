@@ -86,13 +86,13 @@ module.exports.setroute = function (routes, app) {
 //need to work on the filter messages channels
 var message = function (_message, _callback) {
     //console.log("discord message...");
-    if (plugin.getChanelID() == _message.channel.id) {
-        StringCommandProcessCheck(_message, function (textstring) {
-            //console.log("finish process...");
-            //console.log(textstring);
-        });
-        _callback(null);
-    }
+    //if(plugin.getChanelID() == _message.channel.id){//only channel id or name to filter just for the reponse
+    StringCommandProcessCheck(_message, function (textstring) {
+        //console.log("finish process...");
+        //console.log(textstring);
+    });
+    _callback(null);
+    //}
 };
 module.exports.message = message;
 //===============================================

@@ -1,4 +1,8 @@
 {
-	"promptcommand":"db",
-	"enablehelp":true
+    "promptcommand": "db",
+    "enablehelp": true,
+    "databaseguildid": "165286096710795264",
+    "databaseguildname": "Discord Modular Bot Dev",
+    "databasechannelid": "242120335036645378",
+    "databasechannelname": "assets"
 }

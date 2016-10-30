@@ -9,9 +9,17 @@
 
 module.exports.commandline = "gms";
 
-module.exports.scriptparams = "gms <amount> (limited 100)";
+module.exports.scriptparams = "gms <amount>";
 
 module.exports.executescript = function(message,args){
+	console.log("data?");
+
+	message.channel.fetchMessages()
+		.then(messages =>{
+			console.log(messages);
+		});
+
+	/*
 	var count = 0;
 	var pcount;
 	if(args[2] !=null){
@@ -25,10 +33,10 @@ module.exports.executescript = function(message,args){
 	}
 	if(count > 0){
 		if(count < 101){
-		message.channel.fetchMessages({limit: count})
+		//message.channel.fetchMessages({limit: count})
+		message.channel.fetchMessages()
 			.then(messages =>{
-				//console.log(messages);
-
+				console.log(messages);
 			});
 		}else{
 			message.channel.sendMessage("Over Limited! 100 Max!");
@@ -36,4 +44,5 @@ module.exports.executescript = function(message,args){
 	}
 	pcount =null;
 	count = null;
+	*/
 };
