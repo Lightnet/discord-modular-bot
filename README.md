@@ -45,8 +45,8 @@ Plan/Idea Design:
 This is an idea testing script on going.
 
 [First time running]
- * You need Nodejs version install.
- * npm install
+ * You need Nodejs version install.(current version 7.0.0)
+ * npm install (this will install the packages that is in the package.json config)
 
  First time running the discord bot app it will create an default config.json. You need to config the settings once the application is launch and go to setting. There be seem easy to read. There are two type which account login or token login. Note you need to go to discord app developer web site to access and create an application to get the token key.
 
@@ -63,5 +63,8 @@ npm start
  * ! help -rpg commands
  * db help -test database
 
-
-Note those are work in progress. Some are not working yet.
+Notes:
+ * Those are work in progress. Some are not working yet.
+ * Each of those are in plugin packages.
+ * database scripting is not fully build for production but to test out the query actions.
+ * web page chat message box is not fully build.
