@@ -57,3 +57,11 @@ channelname (set name when it find the id)
 [run batch file]
 
 npm start
+
+[commands]:
+ * /bot help -test commands
+ * ! help -rpg commands
+ * db help -test database
+
+
+Note those are work in progress. Some are not working yet.
