@@ -41,7 +41,6 @@ function remove(discordbot, message, channel, args){
 			objvar = _objm[value];
 		}
 		//console.log(Object);
-
 		//need to convert to json some how?
 		messages.forEach(function(mg){
 			//console.log(mg.content);
@@ -51,7 +50,7 @@ function remove(discordbot, message, channel, args){
 			try{
 				if(_obj[objvalue] !=null){
 					if(_obj[objvalue] == objvar){
-						console.log("found!");
+						//console.log("found!");
 						mg.delete();
 					}
 				}
@@ -77,9 +76,45 @@ function insert(discordbot, message, channel, args){
 	console.log(index);
 	var _string = message.content.substr(index+7,message.content.length);
 	console.log("|"+_string);
-
 	channel.sendMessage(_string);
+	message.sendMessage("string added to database!");
 };
+//working on it
+function update(discordbot, message, channel, args){
+	//db query update {"test": "testme","last":"one"}
+	var index = message.content.search('update');
+	var _string = message.content.substr(index+7,message.content.length);
+	var _objm = JSON.parse(_string);
+	//console.log("|"+_string);
+	channel.fetchMessages().then(messages =>{
+		console.log(messages);
+		messages.forEach(function(mg){
+			var _obj2 = JSON.parse(mg.content);
+			var bfound = false;
+			//need to work on the fixed here just tmp
+			for(value in _objm){
+				for(value2 in _obj2){
+					if((value == value2)&&(_obj2[value2] == _objm[value])){
+						bfound = true;
+						break;
+					}
+				}
+				if(bfound){
+					_obj2[value] = _objm[value];
+				}
+			}
+			if(bfound){
+				var _objstr = JSON.stringify(_obj2);
+				mg.edit(_objstr); //update the edit message
+				//console.log(_objstr);
+			}
+			_obj2 =null;
+			bfound =null;
+			_objstr= null;
+			_objm =null;
+		});
+	});
+}
 
 
 module.exports.commandline = "query";
@@ -131,6 +166,9 @@ module.exports.executescript = function(message,args){
 						}
 						if(args[2] == "delete"){
 							remove(discordbot,message,channel,args);
+						}
+						if(args[2] == "update"){
+							update(discordbot,message,channel,args);
 						}
 					}
 				}
