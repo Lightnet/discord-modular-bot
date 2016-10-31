@@ -6,6 +6,8 @@
 
     Information: Please read the readme.md file for more information.
 */
+var config = require('../config.json');
+var plugin = require("../../../app/libs/plugin.js");
 
 module.exports.commandline = "dms";
 

@@ -1,4 +1,8 @@
+General Permissions:
+ * Manage Channels (to allow add and delete channels)
+
 Text Permissions:
  * manage messages (to allow delete message)
+ *
 
 Can delete up to 100 messages.

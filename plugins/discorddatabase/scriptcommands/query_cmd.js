@@ -10,6 +10,7 @@ var fs = require('fs');
 var configpath = __dirname + '/../config.json';
 //console.log(configpath);
 var config = require('../config.json');
+var plugin = require("../../../app/libs/plugin.js");
 
 //client, message from listen, channel seearch from client
 function findall(discordbot, message, channel, args){

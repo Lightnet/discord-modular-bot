@@ -15,6 +15,23 @@ if(typeof __dirname == 'undefined'){__dirname = ".";}
 
 console.log(process.versions);
 
+var input = 'foo bar "lorem ipsum" baz';
+var R =  /(\w|\s)*\w(?=")|\w+/g;
+var output = input.match(R);
+console.log(output);
+
+var text = "! test mee";
+var output = text.match(R);
+console.log(output);
+
+
+//var R =  /{([^}]*)}/;//ok?
+var R =  /{([^}]*)}/;//ok?
+var input = 'foo {"test":"test","teste":{"s":"d"}}';
+var output = input.match(R);
+console.log(output);
+
+
 var path = require('path');
 var fs = require('fs');
 var configpath = './app/config.json';
@@ -138,15 +155,17 @@ plugin_files.forEach(function (modelFile) {
 	      	} catch (e) {
 	        	// It isn't accessible
 	        	console.log(package_main);
-	        	console.log("%c Plugin no main file js!" + modelFile,'background: #222; color: #bada55');
-	        	console.log(e);
+	        	console.log("%c Plugin no main file js!" + modelFile + " / Error in scripting?",'background: #222; color: #ff6600');
+	        	//console.log(e);
+				console.log(e.stack);
 	      	}
 		}
 	} catch (e) {
 		// It isn't accessible
       	console.log(package_filename);
-      	console.log("%c Plugin no file package!" + modelFile,'background: #222; color: #bada55');
-      	console.log(e);
+      	console.log("%c Plugin no file package!" + modelFile+ " / Error in scripting?",'background: #222; color: #ff6600');
+      	//console.log(e);
+		console.log(e.stack);
     }
     //plugins.push(packagescript);
     //console.log(plugins.length);
