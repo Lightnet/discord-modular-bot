@@ -9,33 +9,24 @@
 var config = require('../config.json');
 var plugin = require("../../../app/libs/plugin.js");
 
-module.exports.commandline = "dms";
+module.exports.commandline = "deletemessages";
 
-module.exports.scriptparams = "dms <amount> (limited 100)";
+module.exports.scriptparams = "deletemessages <amount> (limited 100)";
 
 module.exports.executescript = function(message,args){
 	var count = 0;
-	var pcount;
-	if(args[2] !=null){
-		var pcount = parseInt(args[2]) || 0;
-		//console.log(typeof pcount);
-		//console.log(pcount);
-		if(pcount != null){
-			//console.log("pass?");
-			count = pcount;
+	var options = {};
+	count = parseInt(args[2]) || 0;
+	if(count < 101){
+		if(count != 0){
+			options = {limit: count};
 		}
-	}
-	if(count > 0){
-		if(count < 101){
-		message.channel.fetchMessages({limit: count})
+		message.channel.fetchMessages(options)
 			.then(messages =>{
-				//console.log(messages);
-				messages.deleteAll(10);
+				console.log(messages);
+				messages.deleteAll();
 			});
-		}else{
-			message.channel.sendMessage("Over Limited! 100 Max!");
-		}
 	}
-	pcount =null;
+	options =null;
 	count = null;
 };

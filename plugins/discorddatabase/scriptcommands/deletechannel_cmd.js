@@ -20,31 +20,33 @@ module.exports.executescript = function(message,args){
 	if(discordbot !=null){
 		//if id key is not assign serach for guild and channel text name
 		if(config.databaseguildid != ""){
+			var bfound = false;
 			discordbot.guilds.forEach(function (guild) {
 		    	//console.log("id:"+guild.id);
 				//console.log("name:"+guild.name);
 				//console.log(guild.id + ":" + config.databaseguildid);
 				if(guild.id == config.databaseguildid){
 					//console.log(guild);
-					var bfound = false;
 					//var channeltext = "Channels:\n";
 					guild.channels.forEach(function (channel) {
-						if(channel.name.valueOf() ==  args[2].valueOf()){
+						if(channel.name == args[2]){
 							bfound = true;
 							//console.log(channel);
 							channel.delete();
 						}
 					});
-					if(!bfound){
-						console.log('Does not exist!');
-					}else{
-						console.log('Delete!');
-					}
-					bfound =null;
-					//message.channel.sendMessage(channeltext);
-					//channeltext =null;
 				}
 			});
+			if(!bfound){
+				console.log('Does not exist!');
+				message.channel.sendMessage('Channel does not exist!');
+			}else{
+				console.log('Delete!');
+				message.channel.sendMessage('Channel Delete!');
+			}
+			bfound =null;
+			discordbot=null;
+			//message.channel.sendMessage(channeltext);
 		}
 	}
 };

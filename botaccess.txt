@@ -6,3 +6,4 @@ Text Permissions:
  *
 
 Can delete up to 100 messages.
+Without message count delete up to 50 message or get message up to 50?

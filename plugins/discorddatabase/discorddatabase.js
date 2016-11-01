@@ -37,7 +37,7 @@ var helpcommand = {
         //console.log(message);
         //console.log(commandlist);
         var _textmessage = '';
-        _textmessage += 'RPG Text Basics:\n`help commands:\n';
+        _textmessage += 'Database list\n`help commands:\n';
         for (var i = 0; i < commandlist.length; i++) {
             _textmessage += config.promptcommand + ' ' + commandlist[i] + '\n';
         }

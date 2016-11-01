@@ -11,7 +11,7 @@ var plugin = require("../../../app/libs/plugin.js");
 
 module.exports.commandline = "getchannel";
 
-module.exports.scriptparams = "getchannel <name>";
+module.exports.scriptparams = "getchannel";
 
 module.exports.executescript = function(message,args){
 	//console.log("data?");
@@ -46,7 +46,7 @@ module.exports.executescript = function(message,args){
 			}else {
 				message.channel.sendMessage("Does not exist or error?");
 			}
-
+			discordbot =null;
 			bfound = null;
 			name= null;
 		}
