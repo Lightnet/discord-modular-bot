@@ -59,7 +59,7 @@ var helpcommand = {
 commands.push(helpcommand);
 //console.log(config.promptcommand);
 
-var init = function(){
+//var init = function(){
 	//console.log(global.run);
 	//console.log(global.mongorito);
   	//console.log("chat bot init...");
@@ -71,8 +71,8 @@ var init = function(){
 		//message.channel.sendMessage("stats found!");
 	//});
 	//commands.push(statscommand);
-}
-module.exports.init = init;
+//}
+//module.exports.init = init;
 
 function StringCommandProcessCheck(_message,callback){
 	//console.log(_message.content.search('/!'));

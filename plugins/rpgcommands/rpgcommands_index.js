@@ -52,20 +52,20 @@ var helpcommand = {
 };
 commands.push(helpcommand);
 //console.log(config.promptcommand);
-var init = function () {
-    //console.log(global.run);
-    //console.log(global.mongorito);
-    //console.log("chat bot init...");
-    //var helpcommand = new botcommand("help",function(message,args){
-    //message.channel.sendMessage("help found!");
-    //});
-    //commands.push(helpcommand);
-    //var statscommand = new botcommand("stats",function(message,args){
-    //message.channel.sendMessage("stats found!");
-    //});
-    //commands.push(statscommand);
-};
-module.exports.init = init;
+//var init = function(){
+//console.log(global.run);
+//console.log(global.mongorito);
+//console.log("chat bot init...");
+//var helpcommand = new botcommand("help",function(message,args){
+//message.channel.sendMessage("help found!");
+//});
+//commands.push(helpcommand);
+//var statscommand = new botcommand("stats",function(message,args){
+//message.channel.sendMessage("stats found!");
+//});
+//commands.push(statscommand);
+//}
+//module.exports.init = init;
 function StringCommandProcessCheck(_message, callback) {
     //console.log(_message.content.search('/!'));
     //console.log(_message);
